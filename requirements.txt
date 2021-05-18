@@ -22,7 +22,6 @@ flasgger
 xlwt
 webassets
 sympy
-dateutil
 # flask-babel
 # flask-bootstrap
 # pymongo==3.5.1
