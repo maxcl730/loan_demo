@@ -12,7 +12,6 @@ from common import Log
 
 def create_app(config_name='production'):
     """Create the app instance via Factory Method"""
-
     app = Flask(__name__)
 
     # Set the app config
@@ -51,7 +50,7 @@ def create_app(config_name='production'):
     api_v1.api_setup(restful_api)
     app.register_blueprint(restful_api_bp)
 
-    #函数模板
+    # 函数模板
     from common.helper.urlmanager import UrlManager
     app.add_template_global(UrlManager.makeup_static_url, 'makeup_static_url')
     app.add_template_global(UrlManager.makeup_image_url, 'makeup_image_url')
