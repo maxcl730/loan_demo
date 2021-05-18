@@ -97,6 +97,7 @@ class ProductionConfig(Config):
     # Flask-Cache's config
     CACHE_TYPE = 'simple'
 
+
 class DevelopmentConfig(Config):
     """Development config class."""
     PORT = 5000

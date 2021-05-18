@@ -10,6 +10,8 @@ build
 source/_static*
 source/_templates*
 flask_admin/tests/tmp
+logs/
+logs/*
 dist/*
 flask_session/*
 flask_session/

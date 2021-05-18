@@ -1,5 +1,6 @@
 redis
-gevent
+greenlet>=1.1.0
+gevent>=21.1.0
 requests
 urllib3
 pycrypto
