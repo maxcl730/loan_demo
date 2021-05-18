@@ -1,0 +1,45 @@
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">{{ _fsdomain('Navigator') }}</li>
+                <li>
+                    <a href="{{ url_for('manage.index') }}">
+                        <i class="fa fa-home"></i>
+                        <span>{{ _fsdomain('Dashboard') }}</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-send"></i>
+                        <span>{{ _fsdomain('Applications') }}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url_for('manage.index')}}"><i class="fa fa-circle-o"></i> 申请列表</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-user"></i>
+                        <span>{{ _fsdomain('Members') }}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url_for('manage_member.list_member') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('All members') }}</a></li>
+                        <li><a href="{{ url_for('manage_member.blocked_member') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Black list') }}</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <span>{{ _fsdomain('System') }}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url_for('manage_system.list_user') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Users') }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
