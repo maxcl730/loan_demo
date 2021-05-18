@@ -9,7 +9,7 @@ import os.path as op
 import os
 import re
 from common import Log
-from trialcenter.models.image import Image
+#from trialcenter.models.image import Image
 from common.date import Date
 
 
@@ -67,6 +67,7 @@ class ImageService(object):
                                                          current_app.config['APP']['thumb_width']),
                                                         PillowImage.ANTIALIAS)
                     thumb_img.save(filename + '_thumb.jpg', format='jpeg', quality=80)
+                """
                 image = Image(filename=filename,
                               url=url,
                               size=op.getsize(filename),
@@ -75,6 +76,7 @@ class ImageService(object):
                               ).save()
                 Log.info('Success upload file: {}.'.format(filename))
                 return image
+                """
             else:
                 Log.warn('Can not open image file.')
                 raise Exception('Can not open image file.')

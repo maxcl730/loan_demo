@@ -6,6 +6,7 @@ pycrypto
 Pillow
 flask
 flask-script>=2.0.5
+flask_bootstrap
 PyMySQL>=0.8
 flask_sqlalchemy
 flask-debugtoolbar
@@ -14,7 +15,8 @@ Flask-Bcrypt
 Flask-Security
 Flask-Restful
 flask-babelex
-flask_migrate
+flask_migrate==2.7.0
+gunicorn
 WTForms-Components
 werkzeug
 waitress
