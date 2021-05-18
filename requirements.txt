@@ -5,7 +5,7 @@ requests
 urllib3
 pycrypto
 Pillow
-flask
+flask>=2.0.0
 flask-script>=2.0.5
 flask_bootstrap
 PyMySQL>=0.8
@@ -13,9 +13,10 @@ flask_sqlalchemy
 flask-debugtoolbar
 Flask-WTF
 Flask-Bcrypt
-Flask-Security
-Flask-Restful
-flask-babelex
+Flask-Security-too==4.0.1
+Flask-Restful>=0.3.9
+flask-babelex==0.9.4
+flask-babel==2.0.0
 flask_migrate==2.7.0
 gunicorn
 WTForms-Components
@@ -25,8 +26,7 @@ flasgger
 xlwt
 webassets
 sympy
-# flask-babel
-# flask-bootstrap
+flask-bootstrap
 # pymongo==3.5.1
 # Flask-MongoEngine>=0.9.5
 # flask-login==0.3.2

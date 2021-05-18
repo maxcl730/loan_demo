@@ -9,7 +9,7 @@ class Config(object):
 
     INVITATION_CODE_TTL = 86400
     APP = {
-        'domain': 'https://loan.com/',
+        'domain': 'https://loan.52fisher.com/',
     }
     MANAGEMENT_LIST_PER_PAGE = 20
     FRONTEND_LIST_PER_PAGE = 10
@@ -87,8 +87,8 @@ class ProductionConfig(Config):
     DEBUG = True
 
     SQLALCHEMY_ECHO = False
-    #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:t69i5wz87a@172.22.0.16/loan?charset=utf8mb4'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://logan:chengliang@192.168.0.70/logan_test?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:t69i5wz87a@172.22.0.16/loan?charset=utf8mb4'
+    #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://logan:chengliang@192.168.0.70/logan_test?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENCODING = "utf8mb4"
 
@@ -108,16 +108,16 @@ class DevelopmentConfig(Config):
     # Open Debug
     DEBUG = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    DEBUG_TB_PANELS=['flask_debugtoolbar.panels.timer.TimerDebugPanel',
-                     # 'flask_mongoengine.panels.MongoDebugPanel',
-                     'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
-                     'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
-                     'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel',
-                     'flask_debugtoolbar.panels.template.TemplateDebugPanel',
-                     'flask_debugtoolbar.panels.logger.LoggingPanel',
-                     'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
-                     'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
-                     ]
+    DEBUG_TB_PANELS = ['flask_debugtoolbar.panels.timer.TimerDebugPanel',
+                       # 'flask_mongoengine.panels.MongoDebugPanel',
+                       'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
+                       'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+                       'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel',
+                       'flask_debugtoolbar.panels.template.TemplateDebugPanel',
+                       'flask_debugtoolbar.panels.logger.LoggingPanel',
+                       'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
+                       'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
+                      ]
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://logan:chengliang@192.168.0.70/logan_test?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
