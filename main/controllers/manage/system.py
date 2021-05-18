@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import current_app, Blueprint, redirect, abort, url_for, flash, jsonify, request
 from flask_security import login_required
-from bson.objectid import ObjectId
 from common.helper import ops_render
 from main.models.admin import User
 from extensions import user_datastore, set_password
