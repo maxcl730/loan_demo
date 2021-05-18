@@ -77,16 +77,18 @@ class Config(object):
 class ProductionConfig(Config):
     """Production config calss."""
     # Flask-Cache's config
-    CACHE_TYPE = 'redis'
-    CACHE_KEY_PREFIX = 'loan_'
-    CACHE_REDIS_HOST = '127.0.0.1'
-    CACHE_REDIS_PORT = '6379'
+    #CACHE_TYPE = 'redis'
+    #CACHE_KEY_PREFIX = 'loan_'
+    #CACHE_REDIS_HOST = '127.0.0.1'
+    #CACHE_REDIS_PORT = '6379'
     # CACHE_REDIS_PASSWORD = ''
     # CACHE_REDIS_DB = 1
     # CACHE_REDIS_URL = redis://user:password@localhost:6379/1
+    DEBUG = True
 
     SQLALCHEMY_ECHO = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:t69i5wz87a@172.22.0.16/loan?charset=utf8mb4'
+    #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:t69i5wz87a@172.22.0.16/loan?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://logan:chengliang@192.168.0.70/logan_test?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENCODING = "utf8mb4"
 
