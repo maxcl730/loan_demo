@@ -198,6 +198,23 @@ application_post_parser.add_argument(
     help="Method is required."
 )
 
+# 还款参数
+loan_repayment_parser = uid_token_parser.copy()
+loan_repayment_parser.add_argument(
+    'application_id',
+    type=int,
+    required=True,
+    location=['form', 'json'],
+    help="Application id"
+)
+loan_repayment_parser.add_argument(
+    'term',
+    type=int,
+    required=True,
+    location=['form', 'json'],
+    help="Term sequence."
+)
+
 # 上传图片接口
 upload_post_parser = uid_token_parser.copy()
 upload_post_parser.add_argument(

@@ -2,10 +2,16 @@
 import json
 from flask import jsonify
 from flask_restful import Resource, fields
+from main.models.loan import Repayment
+# from main.models.member import Member
+from common.helper.member import check_token
+from .parser import loan_repayment_parser, installments_detail_parser
 from common.http import Http
 from common.date import Date
+from database import db
 from common.helper.loan import MonthInstallment
-from .parser import installments_detail_parser
+from common import Log
+# from sqlalchemy import and_, or_
 
 
 class LoanPolicyApi(Resource):
@@ -66,7 +72,7 @@ class InstallmentsDetailApi(Resource):
             'installments': fields.List(
                 fields.Nested({
                     'sequence': fields.Integer,
-                    'date': fields.String,
+                    'payment due date': fields.String,
                     'fee': fields.Float
                 }))
         }
@@ -91,7 +97,7 @@ class RepaymentApi(Resource):
     def post(self):
         """
         还款接口
-        还款接口，需要提交：amount/term/apr/method
+        还款接口，需要提交：application_id/term
         ---
         tags:
           - Loan接口
@@ -113,26 +119,17 @@ class RepaymentApi(Resource):
             required: true
             schema:
               required:
-                - amount
+                - application_id
                 - term
-                - apr
               properties:
-                amount:
+                application_id:
                   type: int
-                  description: 贷款总额
-                  example: 10000
+                  description: 申请id
+                  example: 132
                 term:
                   type: int
-                  description: 分期数
-                  example: 6
-                apr:
-                  type: float
-                  description: 年利率
-                  example: 5.3
-                method:
-                  type: string
-                  description: 还款方式, 默认是A-Equal_Amortization
-                  example: A/B
+                  description: 分期序号
+                  example: 132
         responses:
           200:
             description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
@@ -140,4 +137,18 @@ class RepaymentApi(Resource):
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 
         """
-        pass
+        args = loan_repayment_parser.parse_args()
+        # 验证token
+        try:
+            member = check_token(uid=args['uid'], token=args['token'], fake=False)
+        except Exception as e:
+            return Http.gen_failure_response(message=e.__str__())
+
+        repayment = Repayment.query.filter_by(application_id=args['application_id'], term=args['term']).first()
+        repayment.paid_status = 1
+        db.session.add(repayment)
+        db.session.commit()
+        # Log.info(repayment.paid_status)
+        return Http.gen_success_response()
+
+

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .member import MemberLoginApi, MemberAuthApi, MemberRegisterApi, MemberInfoApi, MemberDebitApi
-from .loan import LoanPolicyApi, InstallmentsDetailApi
+from .loan import LoanPolicyApi, InstallmentsDetailApi, RepaymentApi
 from .application import LoanApplicationApi
 #from .homepage import HomepageApi
 
@@ -55,4 +55,10 @@ def api_setup(api=None):
         LoanApplicationApi,
         '/loan/application',
         endpoint='api_loan_application'
+    )
+
+    api.add_resource(
+        RepaymentApi,
+        '/loan/repayment',
+        endpoint='api_loan_repayment'
     )

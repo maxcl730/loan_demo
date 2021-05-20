@@ -15,7 +15,7 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{ url_for('manage.index')}}"><i class="fa fa-circle-o"></i> 申请列表</a></li>
+                        <li><a href="{{ url_for('manage_application.list_application')}}"><i class="fa fa-circle-o"></i>  {{ _fsdomain('All') }}</a></li>
                     </ul>
                 </li>
 
@@ -26,7 +26,7 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{ url_for('manage_member.list_member') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('All members') }}</a></li>
+                        <li><a href="{{ url_for('manage_member.list_member') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('All') }}</a></li>
                         <li><a href="{{ url_for('manage_member.blocked_member') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Black list') }}</a></li>
                     </ul>
                 </li>

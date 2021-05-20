@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from flask_wtf import FlaskForm as Form
-from wtforms import StringField, SelectField, TextField, TextAreaField, FileField, ValidationError, SubmitField, \
-                    RadioField, BooleanField, DecimalField, IntegerField, HiddenField, FieldList, FormField, \
-                    DateField, PasswordField
+from wtforms import StringField, SelectField, TextField, TextAreaField,  SubmitField, PasswordField
 from wtforms_components import DateTimeField, DateRange, Email
 from wtforms.validators import DataRequired, Required, Length, EqualTo
 # from flask_wtf.file import FileRequired, FileAllowed
-from common.helper.mapping import STATUS, RUNNING_STATUS, PUBLISH_STATUS, REPORT_STATUS, PROVINCE_LIST, \
-    RUNNING_STATUS_WITH_APPLICATION
+from common.helper.mapping import STATUS, RUNNING_STATUS_WITH_APPLICATION
 
 
 class CustomForm(Form):
@@ -103,28 +100,14 @@ class ApplicationSearchForm(CustomForm):
                          render_kw={
                              "class": 'input-sm'
                          })
-    # 试用状态
-    running_status = SelectField('试用状态',
-                                 coerce=int,
-                                 choices=RUNNING_STATUS_WITH_APPLICATION,
-                                 render_kw={
-                                     "class": 'input-sm',
-                                     "style": '"width: 90px"'
-                                 })
-    # 所在省份
-    province_name = SelectField('所在省份',
-                                coerce=str,
-                                choices=PROVINCE_LIST,
-                                render_kw={
-                                     "class": 'input-sm',
-                                     "style": '"width: 90px"'
-                                })
-    Apply_number = IntegerField('申请次数大于',
-                                render_kw={
-                                    "class": "input-sm",
-                                    "type": "input",
-                                    },
-                                )
+    # 申请状态
+    paid_status = SelectField('申请状态',
+                              coerce=int,
+                              choices=RUNNING_STATUS_WITH_APPLICATION,
+                              render_kw={
+                                  "class": 'input-sm',
+                                  "style": '"width: 90px"'
+                              })
     created_time_begin = DateTimeField('开始时间',
                                        validators=[DateRange(
                                            min=datetime(2019, 1, 1),

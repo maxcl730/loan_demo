@@ -80,7 +80,7 @@ class MonthInstallment:
         installments_detail = list()
         for i in range(0, self.periods):
             installments_detail.append({
-                'sequence': i,
+                'sequence': i+1,
                 'date': start_date + relativedelta(months=i+1),
                 'fee': fee_list[i]
             })

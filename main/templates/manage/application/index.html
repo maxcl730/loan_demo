@@ -18,95 +18,55 @@
         <form action="{{ url_for('manage_application.' + filter) }}" method="post" class="form horizontal" role="form" name="search_form">
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
-            <div class="form-group">
-                <label class="label-sm">{{ form.good_name.label.text }}</label> {{ form.good_name }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.nickname.label.text }}</label> {{ form.nickname }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.mobile.label.text }}</label> {{ form.mobile }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.province_name.label.text }}</label>{{ form.province_name }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.running_status.label.text }}</label>{{ form.running_status }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.Apply_number.label.text }}</label>{{ form.Apply_number }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.created_time_begin.label.text }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
-                <label class="label-sm">{{ form.created_time_end.label.text }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
-                <input type="submit" value="搜索" class="btn-xs"/>
-            </div>
+            <br class="form-group">
+                <label class="label-sm">{{ _fsdomain('Nickname') }}</label> {{ form.nickname }} &nbsp;&nbsp;
+                <label class="label-sm">{{ _fsdomain('Mobile') }}</label> {{ form.mobile }} &nbsp;&nbsp;
+                <label class="label-sm">{{ _fsdomain('Status') }}</label>{{ form.paid_status }} <br>
+                <label class="label-sm">{{ _fsdomain('Founded At') }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
+                <label class="label-sm">{{ _fsdomain('Last Updated') }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
+                <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>
         </form>
     </div>
     <div class="box-body">
         <table class="table table-bordered">
             <tr>
-                <td>产品名称</td>
-                <td>用户昵称</td>
-                <td>收货人信息</td>
-                <td>申请宣言</td>
-                <td>申请时间</td>
-                <td>报告及状态</td>
-                <td>最后操作时间</td>
-                <td>操作</td>
+                <th>{{ _fsdomain('National/Resident ID') }}</th>
+                <th>{{ _fsdomain('Mobile') }}</th>
+                <th>{{ _fsdomain('Amount') }}</th>
+                <th>{{ _fsdomain('Term') }}</th>
+                <th>{{ _fsdomain('Apr') }}</th>
+                <th>{{ _fsdomain('Founded At') }}</th>
+                <th>{{ _fsdomain('Last Updated') }}</th>
+                <th>{{ _fsdomain('Stauts') }}</th>
+                <td>{{ _fsdomain('Operate') }}</td>
             </tr>
             {% for item in list.items %}
             <tr>
-                <td>{{ item.trial.good_name }}</td>
-                <td>{{ item.member.nickname }}</td>
-                <td>{{ item.address }}</td>
-                <td>{{ item.content }}</td>
+                <td>{{ item.member.national_id }}</td>
+                <td>{{ item.member.mobile }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.term }}</td>
+                <td>{{ item.apr }}%</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
-                {% if item.report %}
-                    {% if item.report.status == 0 %}
-                        <td>未审核</td>
-                    {% endif %}
-                    {% if item.report.status == 1 %}
-                        <td>通过并发布</td>
-                    {% endif %}
-                    {% if item.report.status == 2 %}
-                        <td>不通过驳回</td>
-                    {% endif %}
-                {% else %}
-                    <td>无报告</td>
-                {% endif %}
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ item.status_text }}</td>
                 <td>
-                    {% if item.trial_active %}
-                        活动未结束
-                    {% else %}
-                    <select class="input-sm" data-id="{{ item.id }}" name="status" style="&quot;width: 90px&quot;">
-                        {% if item.status == 0 %}
-                            <option value="0" selected>未审核</option>
-                        {% else %}
-                            <option value="0">未审核</option>
-                        {% endif %}
-                        {% if item.status == 1 %}
-                            <option value="1" selected>审核通过</option>
-                        {% else %}
-                            <option value="1">审核通过</option>
-                        {% endif %}
-                        {% if item.status == 2 %}
-                            <option value="2" selected>已发货</option>
-                        {% else %}
-                            <option value="2">已发货</option>
-                        {% endif %}
-                        {% if item.status == 4 %}
-                            <option value="4" selected>审核不通过</option>
-                        {% else %}
-                            <option value="4">审核不通过</option>
-                        {% endif %}
-                        {% if item.status == 99 %}
-                            <option value="99" selected>不显示</option>
-                        {% else %}
-                            <option value="99">不显示</option>
-                        {% endif %}
-                    </select>
+                <select class="input-sm" data-id="{{ item.id }}" name="status" style="&quot;width: 90px&quot;">
+                    <option value="-1" selected >Choose</option>
+                    {% if item.status == 0 %}
+                        <option value="1" >{{ _fsdomain('Approve') }}</option>
+                        <option value="2" >{{ _fsdomain('Reject') }}</option>
                     {% endif %}
+                    {% if item.status == 1 %}
+                    {% endif %}
+                    {% if item.status == 2 %}
+                        <option value="1" >{{ _fsdomain('Approve') }}</option>
+                    {% endif %}
+                </select>
                 </td>
             </tr>
             {% endfor %}
         </table>
-        {% if show_download %}
-            <form action="{{ url_for('manage_application.download_application_success') }}" method="post" class="form horizontal" role="form">
-                <label class="label-sm"></label>
-                    {{ form_download.good_name }} &nbsp;&nbsp;
-                    <button class="btn-xs" id="download_excel" >下载发货名单</button>
-            </form>
-        {% endif %}
     </div>
     {{ render_pagination(list, 'manage_application.' + filter) }}
 </div>

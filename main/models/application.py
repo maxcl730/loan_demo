@@ -13,6 +13,8 @@ class Application(db.Model):
     updated_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     created_time = db.Column(db.DateTime, default=datetime.now)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False, index=True)
+    repayment = db.relationship('Repayment', backref="application", lazy='dynamic')
+
 
     @property
     def status_text(self):
@@ -21,10 +23,10 @@ class Application(db.Model):
             status_text = 'Pending'
         elif self.status == 1:
             # 申请通过
-            status_text = 'Passed'
+            status_text = 'Approved'
         elif self.status == 2:
             # 申请通过
-            status_text = 'Refused'
+            status_text = 'Rejected'
         else:
             # 未知
             status_text = 'Unknown'

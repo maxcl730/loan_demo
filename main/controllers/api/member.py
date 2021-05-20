@@ -264,16 +264,17 @@ class MemberInfoApi(Resource):
             member_debit = {'name': None, 'number': None}
         #if member_debit is None:
 
-        return Http.gen_success_response(data={
-                                            'nickName': member.nickname,
-                                            'national_id': member.national_id,
-                                            'sex': member.sex,
-                                            'language': member.language,
-                                            'birthday': member.birthday,
-                                            'status': member.status,
-                                            'debit': member_debit
-                                            },
-                                        data_format=data_format
+        return Http.gen_success_response(
+            data={
+                    'nickName': member.nickname,
+                    'national_id': member.national_id,
+                    'sex': member.sex,
+                    'language': member.language,
+                    'birthday': member.birthday,
+                    'status': member.status,
+                    'debit': member_debit
+                    },
+            data_format=data_format
         )
 
     def post(self):

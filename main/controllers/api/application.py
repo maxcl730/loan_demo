@@ -2,6 +2,7 @@
 from flask import current_app
 from flask_restful import Resource, fields
 from main.models.application import Application
+from main.models.loan import Repayment
 from database import db
 from .parser import application_post_parser, application_get_parser
 from common.helper.member import check_token
@@ -9,6 +10,7 @@ from common.helper.loan import MonthInstallment
 from common.helper.mapping import TimestampValue
 from common.http import Http
 from common.date import Date
+from common import Log
 
 
 class MemberAvatar(fields.Raw):
@@ -63,19 +65,6 @@ class LoanApplicationApi(Resource):
               json: {'code': 0, "message": "Success", 'data': { }}
 
         """
-        data_format = {
-            'applications_count': fields.Integer,
-            'applications': fields.List(fields.Nested({
-                'id': fields.Integer,
-                'amount': fields.Integer,
-                'term': fields.Integer,
-                'apr': fields.Float,
-                'status': fields.Integer,
-                'status_text': fields.String,
-                'created_time': TimestampValue(attribute='created_time'),
-                'updated_time': TimestampValue(attribute='created_time'),
-            })),
-        }
         args = application_get_parser.parse_args()
         try:
             member = check_token(uid=args['uid'], token=args['token'])
@@ -83,15 +72,57 @@ class LoanApplicationApi(Resource):
             return Http.gen_failure_response(message=e.__str__())
         if args.get("application_id", None) is None:
             # 获取所有贷款申请
+            data_format = {
+                'applications_count': fields.Integer,
+                'applications': fields.List(fields.Nested({
+                    'id': fields.Integer,
+                    'amount': fields.Integer,
+                    'term': fields.Integer,
+                    'apr': fields.Float,
+                    'status': fields.Integer,
+                    'status_text': fields.String,
+                    'created_time': TimestampValue(attribute='created_time'),
+                    'updated_time': TimestampValue(attribute='created_time')
+                })),
+            }
             applications = member.applications.all()
+            data = {
+                'applications': applications,
+                'installments': None,
+            }
         else:
+            data_format = {
+                'application': fields.Nested({
+                    'id': fields.Integer,
+                    'amount': fields.Integer,
+                    'term': fields.Integer,
+                    'apr': fields.Float,
+                    'status': fields.Integer,
+                    'status_text': fields.String,
+                    'created_time': TimestampValue(attribute='created_time'),
+                    'updated_time': TimestampValue(attribute='created_time')
+                }),
+                'installments': fields.List(
+                    fields.Nested({
+                        'term': fields.Integer,
+                        'payment_due_date': TimestampValue(attribute='payment_due_date'),
+                        'fee': fields.Float,
+                        'paid_status': fields.Integer,
+                        'status_text': fields.String
+                    })
+                )
+            }
             # 获取指定的贷款申请
-            applications = member.applications.filter_by(id=args['application_id']).all()
+            application = member.applications.filter_by(id=args['application_id']).first()
+            if application:
+                installments = Repayment.query.filter_by(application_id=args['application_id']).order_by(Repayment.term).all()
+            else:
+                installments = None
+            data = {
+                'application': application,
+                'installments': installments,
+            }
 
-        data = {
-            'applications_count': len(applications),
-            'applications': applications
-        }
         return Http.gen_success_response(data=data, data_format=data_format)
 
     def post(self):
