@@ -92,22 +92,22 @@ class EditRuleForm(CustomForm):
 
 
 class ApplicationSearchForm(CustomForm):
-    nickname = StringField('用户昵称',
-                           render_kw={
-                               "class": 'input-sm',
-                           })
+    national_id = StringField('用户昵称',
+                     render_kw={
+                         "class": 'input-sm',
+                       })
     mobile = StringField('手机号',
                          render_kw={
                              "class": 'input-sm'
                          })
     # 申请状态
-    paid_status = SelectField('申请状态',
-                              coerce=int,
-                              choices=RUNNING_STATUS_WITH_APPLICATION,
-                              render_kw={
-                                  "class": 'input-sm',
-                                  "style": '"width: 90px"'
-                              })
+    status = SelectField('申请状态',
+                        coerce=int,
+                        choices=RUNNING_STATUS_WITH_APPLICATION,
+                        render_kw={
+                          "class": 'input-sm',
+                          "style": '"width: 90px"'
+                        })
     created_time_begin = DateTimeField('开始时间',
                                        validators=[DateRange(
                                            min=datetime(2019, 1, 1),
@@ -115,7 +115,7 @@ class ApplicationSearchForm(CustomForm):
                                        )],
                                        format='%Y-%m-%d',
                                        render_kw={
-                                           "placeholder": "开始时间",
+                                           "placeholder": "Begin",
                                            "class": "input-sm",
                                            "type": "input",
                                            "autocomplete": "off",
@@ -127,7 +127,7 @@ class ApplicationSearchForm(CustomForm):
                                      )],
                                      format='%Y-%m-%d',
                                      render_kw={
-                                         "placeholder": "结束时间",
+                                         "placeholder": "End",
                                          "class": "input-sm",
                                          "type": "input",
                                          "autocomplete": "off",

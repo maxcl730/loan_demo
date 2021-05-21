@@ -19,9 +19,9 @@
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             <br class="form-group">
-                <label class="label-sm">{{ _fsdomain('Nickname') }}</label> {{ form.nickname }} &nbsp;&nbsp;
+                <label class="label-sm">{{ _fsdomain('National/Resident ID') }}</label> {{ form.national_id }} &nbsp;&nbsp;
                 <label class="label-sm">{{ _fsdomain('Mobile') }}</label> {{ form.mobile }} &nbsp;&nbsp;
-                <label class="label-sm">{{ _fsdomain('Status') }}</label>{{ form.paid_status }} <br>
+                <label class="label-sm">{{ _fsdomain('Status') }}</label>{{ form.status }} <br>
                 <label class="label-sm">{{ _fsdomain('Founded At') }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
                 <label class="label-sm">{{ _fsdomain('Last Updated') }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
                 <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>
@@ -38,7 +38,6 @@
                 <th>{{ _fsdomain('Founded At') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
                 <th>{{ _fsdomain('Stauts') }}</th>
-                <td>{{ _fsdomain('Operate') }}</td>
             </tr>
             {% for item in list.items %}
             <tr>
@@ -49,20 +48,22 @@
                 <td>{{ item.apr }}%</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
-                <td>{{ item.status_text }}</td>
                 <td>
-                <select class="input-sm" data-id="{{ item.id }}" name="status" style="&quot;width: 90px&quot;">
-                    <option value="-1" selected >Choose</option>
-                    {% if item.status == 0 %}
-                        <option value="1" >{{ _fsdomain('Approve') }}</option>
-                        <option value="2" >{{ _fsdomain('Reject') }}</option>
-                    {% endif %}
-                    {% if item.status == 1 %}
-                    {% endif %}
-                    {% if item.status == 2 %}
-                        <option value="1" >{{ _fsdomain('Approve') }}</option>
-                    {% endif %}
-                </select>
+                {% if item.status != 1 %}
+                    <select class="input-sm" data-id="{{ item.id }}" name="status" style="&quot;width: 90px&quot;">
+                        {% if item.status == 0 %}
+                            <option value="0" selected >{{ _fsdomain('Pending') }}</option>
+                            <option value="1" >{{ _fsdomain('Approve') }}</option>
+                            <option value="2" >{{ _fsdomain('Reject') }}</option>
+                        {% endif %}
+                        {% if item.status == 2 %}
+                            <option value="2" selected >{{ _fsdomain('Reject') }}</option>
+                            <option value="1" >{{ _fsdomain('Approve') }}</option>
+                        {% endif %}
+                    </select>
+                {% else %}
+                    {{ item.status_text }}
+                {% endif %}
                 </td>
             </tr>
             {% endfor %}

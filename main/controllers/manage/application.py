@@ -22,7 +22,14 @@ application_bp = Blueprint('manage_application', __name__,)
 def list_application(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = ApplicationSearchForm()
-    applications = Application.query.paginate(page=page, per_page=list_per_page)
+    if request.method == 'POST':
+        Log.info(form.status.data)
+        if form.status.data == 100:
+            applications = Application.query.paginate(page=page, per_page=list_per_page)
+        else:
+            applications = Application.query.filter_by(status=form.status.data).paginate(page=page, per_page=list_per_page)
+    else:
+        applications = Application.query.paginate(page=page, per_page=list_per_page)
 
     response_data = {
         'list': applications,
