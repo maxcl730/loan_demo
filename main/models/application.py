@@ -15,6 +15,14 @@ class Application(db.Model):
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False, index=True)
     repayment = db.relationship('Repayment', backref="application", lazy='dynamic')
 
+    @property
+    def method_text(self):
+        if self.method == 'A':
+            return 'Equal Amortization'
+        elif self.method == 'B':
+            return 'Equal Principal Payment'
+        else:
+            return 'Unknown'
 
     @property
     def status_text(self):

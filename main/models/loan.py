@@ -27,7 +27,7 @@ class Repayment(db.Model):
             if self.payment_due_date < datetime.now():
                 text = 'overdue'  # 逾期
             else:
-                text = 'obligated'  # 待还款
+                text = 'undue'  # 待还款
         else:
             text = 'paid-up'  # 已还清
 

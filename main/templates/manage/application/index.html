@@ -35,6 +35,7 @@
                 <th>{{ _fsdomain('Amount') }}</th>
                 <th>{{ _fsdomain('Term') }}</th>
                 <th>{{ _fsdomain('Apr') }}</th>
+                <th>{{ _fsdomain('Repayment Method') }}</th>
                 <th>{{ _fsdomain('Founded At') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
                 <th>{{ _fsdomain('Stauts') }}</th>
@@ -47,6 +48,7 @@
                 <td>{{ item.amount }}</td>
                 <td>{{ item.term }}</td>
                 <td>{{ item.apr }}%</td>
+                <td>{{ item.method_text }}</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 {% if item.status == 1 %}
