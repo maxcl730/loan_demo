@@ -32,7 +32,7 @@
     <div class="box-body">
         <table class="table table-bordered">
             <tr>
-                <th>{{ _fsdomain('Nickname') }}</th>
+                <th>{{ _fsdomain('National/Resident ID') }}</th>
                 <th>{{ _fsdomain('Mobile') }}</th>
                 <th>{{ _fsdomain('birthday') }}</th>
                 <th>{{ _fsdomain('gender') }}</th>
@@ -41,7 +41,7 @@
             </tr>
             {% for item in list.items %}
             <tr>
-                <td>{{ item.nickname }}</td>
+                <td>{{ item.national_id }}</td>
                 <td>{{ item.mobile }}</td>
                 <td>{{ item.birthday}}</td>
                 <td>{{ item.sex_text}}</td>
