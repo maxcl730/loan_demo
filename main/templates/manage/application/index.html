@@ -38,6 +38,7 @@
                 <th>{{ _fsdomain('Founded At') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
                 <th>{{ _fsdomain('Stauts') }}</th>
+                <th>{{ _fsdomain('Operate') }}</th>
             </tr>
             {% for item in list.items %}
             <tr>
@@ -48,23 +49,21 @@
                 <td>{{ item.apr }}%</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
-                <td>
-                {% if item.status != 1 %}
-                    <select class="input-sm" data-id="{{ item.id }}" name="status" style="&quot;width: 90px&quot;">
-                        {% if item.status == 0 %}
-                            <option value="0" selected >{{ _fsdomain('Pending') }}</option>
-                            <option value="1" >{{ _fsdomain('Approve') }}</option>
-                            <option value="2" >{{ _fsdomain('Reject') }}</option>
-                        {% endif %}
-                        {% if item.status == 2 %}
-                            <option value="2" selected >{{ _fsdomain('Reject') }}</option>
-                            <option value="1" >{{ _fsdomain('Approve') }}</option>
-                        {% endif %}
-                    </select>
-                {% else %}
-                    {{ item.status_text }}
+                {% if item.status == 1 %}
+                    <td>{{ item.status_text }}</td>
+                    <td></td>
+                {% elif item.status == 0 %}
+                    <td>{{ item.status_text }}</td>
+                    <td>
+                        <a class="btn btn-primary" onclick="confirm_approve()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=1) }}" >{{ _fsdomain('Approve') }}</a>
+                        <a class="btn btn-primary" onclick="confirm_reject()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=2) }}" >{{ _fsdomain('Reject') }}</a>
+                    </td>
+                {% elif item.status == 2 %}
+                    <td>{{ item.status_text }}</td>
+                    <td>
+                        <a class="btn btn-primary" onclick="confirm_approve()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=1) }}" >{{ _fsdomain('Approve') }}</a>
+                    </td>
                 {% endif %}
-                </td>
             </tr>
             {% endfor %}
         </table>
@@ -92,25 +91,14 @@
             $("form[name='search_form']").attr('action',newUrl);
             $("form[name='search_form']").submit();
         })
-        $(".box-body select").change(function(){
-            var id = $(this).attr("data-id");
-            var status = $(this).find("option:selected").val();
-            var data = JSON.stringify({
-                'id': id,
-                'status': status
-            });
-            $.ajax({
-                url: "{{ url_for('manage_application.change_application_status') }}",
-                type: 'POST',
-                dataType: "json",
-                contentType: 'application/json; charset=UTF-8',
-                data: data,
-                processData: false,
-                success: function (rs) {
-                }
-            });
-        })
-
     })
+    </script>
+    <script type="text/javascript">
+        function confirm_approve(){
+            if (!confirm("{{ _fsdomain('Approve application?') }}")) {  window.event.returnValue = false;  }
+        }
+        function confirm_reject(){
+            if (!confirm("{{ _fsdomain('Reject application?') }}")) {  window.event.returnValue = false;  }
+        }
     </script>
 {% endblock %}
