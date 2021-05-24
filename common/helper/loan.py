@@ -4,6 +4,7 @@ from os import path as op
 from dateutil.relativedelta import relativedelta
 from sympy import solve
 from sympy import abc
+from common import Log
 
 
 class MonthInstallment:
@@ -81,7 +82,7 @@ class MonthInstallment:
         for i in range(0, self.periods):
             installments_detail.append({
                 'sequence': i+1,
-                'date': start_date + relativedelta(months=i+1),
+                'payment due date': start_date + relativedelta(months=i+1),
                 'fee': fee_list[i]
             })
         return installments_detail
