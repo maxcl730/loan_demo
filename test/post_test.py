@@ -91,11 +91,11 @@ def test_installments():
     return r.json()
 
 
-def test_repayment(auth_info, application_id, term):
+def test_repayment(auth_info, application_id, sequence):
     url = "http://127.0.0.1:5000/api/v1/loan/repayment?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     params = {
         'application_id': application_id,
-        'term': term,
+        'sequence': sequence,
     }
     r = requests.post(url, data=params)
     r.encoding = 'utf-8'
@@ -158,7 +158,7 @@ if __name__ == '__main__':
     #pprint(resp_data)
     #resp_data = test_user_applications_get_by_id(user_token['data'], application_id=2)
     #pprint(resp_data)
-    resp_data = test_repayment(user_token['data'], application_id=2, term=1)
+    resp_data = test_repayment(user_token['data'], application_id=2, sequence=2)
     pprint(resp_data)
     resp_data = test_repayment_list(user_token['data'])
     pprint(resp_data)

@@ -144,7 +144,7 @@ class RepaymentListApi(Resource):
                                                                            Repayment.paid_status == 1).all()
         data = list()
         for rep in repayments:
-            Log.info(rep.keys())
+            # Log.info(rep.keys())
             data.append({
                 'application_id': rep.application_id,
                 'sequence': rep.sequence,
@@ -175,7 +175,7 @@ class RepaymentApi(Resource):
     def post(self):
         """
         还款接口
-        还款接口，需要提交：application_id/term
+        还款接口，需要提交：application_id/sequence
         ---
         tags:
           - Loan接口
@@ -198,13 +198,13 @@ class RepaymentApi(Resource):
             schema:
               required:
                 - application_id
-                - term
+                - sequence
               properties:
                 application_id:
                   type: int
                   description: 申请id
                   example: 132
-                term:
+                sequence:
                   type: int
                   description: 分期序号
                   example: 132
@@ -222,7 +222,8 @@ class RepaymentApi(Resource):
         except Exception as e:
             return Http.gen_failure_response(message=e.__str__())
 
-        repayment = Repayment.query.filter_by(application_id=args['application_id'], sequence=args['term']).first()
+        # Log.info(args)
+        repayment = Repayment.query.filter_by(application_id=args['application_id'], sequence=args['sequence']).first()
         repayment.paid_status = 1
         db.session.add(repayment)
         db.session.commit()

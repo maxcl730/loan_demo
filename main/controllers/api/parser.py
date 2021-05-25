@@ -208,7 +208,7 @@ loan_repayment_parser.add_argument(
     help="Application id"
 )
 loan_repayment_parser.add_argument(
-    'term',
+    'sequence',
     type=int,
     required=True,
     location=['form', 'json'],
