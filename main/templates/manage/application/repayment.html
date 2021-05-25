@@ -25,7 +25,6 @@
                 <th>{{ _fsdomain('Payment due date') }}</th>
                 <th>{{ _fsdomain('Fee') }}</th>
                 <th>{{ _fsdomain('Status') }}</th>
-                <th>{{ _fsdomain('Founded At') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
             </tr>
             {% for item in list.items %}
@@ -34,7 +33,6 @@
                 <td>{{ item.payment_due_date }}</td>
                 <td>{{ item.fee }}</td>
                 <td>{{ item.status_text }}</td>
-                <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
             </tr>
             {% endfor %}
