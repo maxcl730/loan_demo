@@ -52,8 +52,8 @@ def change_application_status(application_id=0, status=0):
                                   y_rate=application.apr/100,
                                   method=application.method
                                   )
-            Log.info(ml.info())
-            Log.info(ml.installments(start_date=Date.today_date()))
+            # Log.info(ml.info())
+            # Log.info(ml.installments(start_date=Date.today_date()))
             for installment in ml.installments(start_date=Date.today_date()):
                 new_repayment = Repayment(application_id=application.id,
                                           sequence=installment['sequence'],
