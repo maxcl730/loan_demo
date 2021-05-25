@@ -35,7 +35,7 @@
                 <th>{{ _fsdomain('Amount') }}</th>
                 <th>{{ _fsdomain('Term') }}</th>
                 <th>{{ _fsdomain('Apr') }}</th>
-                <th>{{ _fsdomain('Repayment Method') }}</th>
+                <!--<th>{{ _fsdomain('Repayment Method') }}</th>-->
                 <th>{{ _fsdomain('Founded At') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
                 <th>{{ _fsdomain('Stauts') }}</th>
@@ -48,11 +48,11 @@
                 <td>{{ item.amount }}</td>
                 <td>{{ item.term }}</td>
                 <td>{{ item.apr }}%</td>
-                <td>{{ item.method_text }}</td>
+                <!--<td>{{ item.method_text }}</td>-->
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 {% if item.status == 1 %}
-                    <td>{{ item.status_text }}</td>
+                    <td><div id="div" onclick="viewrepayment('{{ url_for('manage_application.view_repayment', application_id=item.id) }}')"><a href="javascript:void(0)">{{ item.status_text }}</a></div></td>
                     <td></td>
                 {% elif item.status == 0 %}
                     <td>{{ item.status_text }}</td>
@@ -102,5 +102,16 @@
         function confirm_reject(){
             if (!confirm("{{ _fsdomain('Reject application?') }}")) {  window.event.returnValue = false;  }
         }
+    </script>
+    <script type="text/javascript">
+       function viewrepayment(url)
+       {
+        window.open(url,"Repayment","fullscreen=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no, copyhistory=no,width=650,height=500,left=200,top=300");
+           //var strUrl = "<%=path %>/admin/shenqing/shenqingHuifu.jsp?id="+id;
+         //  alert( "用户名："+document.form1.username.value+",密码："+document.form1.passwd.value);
+           //var strUrl = "<%=path %>/shenqingHuifu.action?id="+id;
+          // window.location.href=strUrl;
+       }
+
     </script>
 {% endblock %}

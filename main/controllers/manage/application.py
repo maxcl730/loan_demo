@@ -83,10 +83,11 @@ def change_application_status(application_id=0, status=0):
 @application_bp.route("/view_repayment/<int:application_id>", methods=['GET'])
 @login_required
 def view_repayment(application_id=0):
-    repaymeny = Repayment.query.filter_by(application_id=application_id)
-    if repaymeny:
+    list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
+    repayments = Repayment.query.filter_by(application_id=application_id).paginate(page=1, per_page=list_per_page)
+    if repayments:
         response_data = {
-            'list': repaymeny,
+            'list': repayments,
         }
     else:
         response_data = {
