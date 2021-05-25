@@ -131,9 +131,9 @@ if __name__ == '__main__':
     }
 
     application_info = {
-        'amount': 15000,
-        'term': 6,
-        'apr': 5.5,
+        'amount': 30000,
+        'term': 3,
+        'apr': 5.8,
         'method': 'A'
     }
     #user_token = test_member_register(user_info)
@@ -145,14 +145,14 @@ if __name__ == '__main__':
     pprint(resp_data)
     #resp_data = test_user_debit(user_token['data'], debit_info)
     #pprint(resp_data)
-    resp_data = test_user_apply(user_token['data'], application_info)
-    pprint(resp_data)
+    #resp_data = test_user_apply(user_token['data'], application_info)
+    #pprint(resp_data)
     resp_data = test_user_applications_get(user_token['data'])
     pprint(resp_data)
-    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=1)
+    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=6)
     pprint(resp_data)
-    resp_data = test_repayment(user_token['data'], application_id=1, term=1)
-    pprint(resp_data)
+    #resp_data = test_repayment(user_token['data'], application_id=1, term=1)
+    #pprint(resp_data)
     #resp_data = test_loan_policy()
     #pprint(resp_data)
     #resp_data = test_installments()

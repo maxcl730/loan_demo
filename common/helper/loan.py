@@ -29,9 +29,9 @@ class MonthInstallment:
 
     def info(self):
         if self.method == 'A':
-            return "corpus:{},  terms:{},  apr:{:.4f}%, method:{}".format(self.corpus, self.periods, self.m_rate * 12, "Equal amortization")
+            return "corpus:{},  terms:{},  apr:{:.4f}, method:{}".format(self.corpus, self.periods, self.m_rate * 12, "Equal amortization")
         elif self.method == 'B':
-            return "corpus:{},  terms:{},  apr:{:.4f}%, method:{}".format(self.corpus, self.periods, self.m_rate * 12, "Equal principle payment")
+            return "corpus:{},  terms:{},  apr:{:.4f}, method:{}".format(self.corpus, self.periods, self.m_rate * 12, "Equal principle payment")
 
     @staticmethod
     def loan_policy():

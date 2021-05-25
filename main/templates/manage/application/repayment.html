@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="box box-primary">
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>{{ _fsdomain('Term') }}</th>
+                <th>{{ _fsdomain('Payment due date') }}</th>
+                <th>{{ _fsdomain('Fee') }}</th>
+                <th>{{ _fsdomain('Status') }}</th>
+                <th>{{ _fsdomain('Founded At') }}</th>
+                <th>{{ _fsdomain('Last Updated') }}</th>
+                <th>{{ _fsdomain('Stauts') }}</th>
+                <th>{{ _fsdomain('Operate') }}</th>
+            </tr>
+            {% for item in list.items %}
+            <tr>
+                <td>{{ item.member.national_id }}</td>
+                <td>{{ item.member.mobile }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.term }}</td>
+                <td>{{ item.apr }}%</td>
+                <td>{{ item.method_text }}</td>
+                <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                {% if item.status == 1 %}
+                    <td>{{ item.status_text }}</td>
+                    <td></td>
+                {% elif item.status == 0 %}
+                    <td>{{ item.status_text }}</td>
+                    <td>
+                        <a class="btn btn-primary" onclick="confirm_approve()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=1) }}" >{{ _fsdomain('Approve') }}</a>
+                        <a class="btn btn-primary" onclick="confirm_reject()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=2) }}" >{{ _fsdomain('Reject') }}</a>
+                    </td>
+                {% elif item.status == 2 %}
+                    <td>{{ item.status_text }}</td>
+                    <td>
+                        <a class="btn btn-primary" onclick="confirm_approve()" href="{{ url_for('manage_application.change_application_status', application_id=item.id, status=1) }}" >{{ _fsdomain('Approve') }}</a>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

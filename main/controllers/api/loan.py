@@ -85,6 +85,7 @@ class InstallmentsDetailApi(Resource):
                                   periods=args['term'],
                                   y_rate=args['apr']/100,
                                   method=args['method'])
+            Log.info(ml.info())
             installments_detail = ml.installments(start_date=Date.today_date())
             if installments_detail:
                 return Http.gen_success_response(data={"installments": installments_detail}, data_format=data_format)

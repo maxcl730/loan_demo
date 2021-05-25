@@ -88,6 +88,7 @@ class LoanApplicationApi(Resource):
             applications = member.applications.all()
             data = {
                 'applications': applications,
+                'applications_count': len(applications),
                 'installments': None,
             }
         else:

@@ -43,18 +43,17 @@ def list_application(page=1):
 @application_bp.route("/change_application_status/<int:application_id>/<int:status>", methods=['GET'])
 @login_required
 def change_application_status(application_id=0, status=0):
-    Log.info(application_id)
-    Log.info(status)
     application = Application.query.filter_by(id=application_id).first()
     if application:
         if status == 1:
             application.status = int(status)
             ml = MonthInstallment(corpus=application.amount,
                                   periods=application.term,
-                                  y_rate=application.apr,
+                                  y_rate=application.apr/100,
                                   method=application.method
                                   )
-            # Log.info(ml.installments(start_date=Date.today_date()))
+            Log.info(ml.info())
+            Log.info(ml.installments(start_date=Date.today_date()))
             for installment in ml.installments(start_date=Date.today_date()):
                 new_repayment = Repayment(application_id=application.id,
                                           term=installment['sequence'],
@@ -79,3 +78,18 @@ def change_application_status(application_id=0, status=0):
         # return jsonify({'code': -1, 'message': 'failure', 'data': {}})
         flash('Application operating was failed!')
         return redirect(url_for('manage_application.list_application'))
+
+
+@application_bp.route("/view_repayment/<int:application_id>", methods=['GET'])
+@login_required
+def view_repayment(application_id=0):
+    repaymeny = Repayment.query.filter_by(application_id=application_id)
+    if repaymeny:
+        response_data = {
+            'list': repaymeny,
+        }
+    else:
+        response_data = {
+            'list': None,
+        }
+    return ops_render('manage/application/repayment.html', response_data)
