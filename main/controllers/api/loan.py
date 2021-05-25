@@ -3,13 +3,15 @@ import json
 from flask import jsonify
 from flask_restful import Resource, fields
 from main.models.loan import Repayment
+from main.models.application import Application
 # from main.models.member import Member
 from common.helper.member import check_token
-from .parser import loan_repayment_parser, installments_detail_parser
+from .parser import loan_repayment_parser, installments_detail_parser, uid_token_parser
 from common.http import Http
 from common.date import Date
 from database import db
 from common.helper.loan import MonthInstallment
+from common.helper.mapping import TimestampValue
 from common import Log
 # from sqlalchemy import and_, or_
 
@@ -94,6 +96,81 @@ class InstallmentsDetailApi(Resource):
         return Http.gen_failure_response(message='Arguments error!')
 
 
+class RepaymentListApi(Resource):
+    def get(self):
+        """
+        还款列表接口
+        还款列表接口
+        ---
+        tags:
+          - Loan接口
+        parameters:
+          - name: uid
+            in: query
+            required: true
+            description: 用户id
+            schema:
+              type: string
+          - name: token
+            in: query
+            required: true
+            description: AccessToken
+            schema:
+              type: string
+        responses:
+          200:
+            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            examples:
+              json: {'code': 0, 'message':'SUCCESS', 'data':{}}
+
+        """
+        # 用户验证（返回uid、signature)
+        args = uid_token_parser.parse_args()
+        try:
+            member = check_token(uid=args['uid'], token=args['token'], fake=False)
+        except Exception as e:
+            return Http.gen_failure_response(message=e.__str__())
+
+        #repayments = Repayment.query.outerjoin(Application).filter(Application.member_id == member.id, Repayment.paid_status == 1)
+
+        repayments = db.session.query(Repayment.application_id,
+                        Repayment.sequence,
+                        Repayment.updated_time,
+                        Repayment.fee,
+                        Application.amount,
+                        Application.created_time,
+                        Application.term).join(Application,
+                        Repayment.application_id == Application.id).filter(Application.member_id == member.id,
+                                                                           Repayment.paid_status == 1).all()
+        data = list()
+        for rep in repayments:
+            Log.info(rep.keys())
+            data.append({
+                'application_id': rep.application_id,
+                'sequence': rep.sequence,
+                'fee': rep.fee,
+                'updated_time': rep.updated_time,
+                'amount': rep.amount,
+                'application_created_time': rep.created_time,
+                'term': rep.term
+            })
+
+        data_format = {
+            'repayments': fields.List(
+                fields.Nested({
+                    'application_id': fields.Integer,
+                    'sequence': fields.Integer,
+                    'fee': fields.Float,
+                    'updated_time': TimestampValue(attribute='updated_time'),
+                    'amount': fields.Integer,
+                    'application_created_time': TimestampValue('application_created_time'),
+                    'term': fields.Integer
+                }))
+        }
+        #return Http.gen_success_response()
+        return Http.gen_success_response(data={'repayments': data}, data_format=data_format)
+
+
 class RepaymentApi(Resource):
     def post(self):
         """
@@ -145,7 +222,7 @@ class RepaymentApi(Resource):
         except Exception as e:
             return Http.gen_failure_response(message=e.__str__())
 
-        repayment = Repayment.query.filter_by(application_id=args['application_id'], term=args['term']).first()
+        repayment = Repayment.query.filter_by(application_id=args['application_id'], sequence=args['term']).first()
         repayment.paid_status = 1
         db.session.add(repayment)
         db.session.commit()

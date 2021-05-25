@@ -56,7 +56,7 @@ def change_application_status(application_id=0, status=0):
             Log.info(ml.installments(start_date=Date.today_date()))
             for installment in ml.installments(start_date=Date.today_date()):
                 new_repayment = Repayment(application_id=application.id,
-                                          term=installment['sequence'],
+                                          sequence=installment['sequence'],
                                           payment_due_date=installment['payment due date'],
                                           fee=installment['fee'])
                 db.session.add(new_repayment)

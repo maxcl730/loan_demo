@@ -17,12 +17,12 @@ with app.app_context():
     user_role = user_datastore.find_or_create_role(name='User', description='Generic user role')
     admin_role = user_datastore.find_or_create_role(name='Admin', description='Admin user role')
     # 创建管理员
-    if not user_datastore.get_user('root@abc.com'):
-        admin = user_datastore.create_user(email='root@abc.com',
-                                           username='root',
-                                           password=set_password('root'))
-        # 为admin添加Admin角色(admin_role)
-        user_datastore.add_role_to_user(admin, admin_role)
+    #if not user_datastore.get_user('root@abc.com'):
+    admin = user_datastore.create_user(email='root@abc.com',
+                                       username='root',
+                                       password=set_password('root'))
+    # 为admin添加Admin角色(admin_role)
+    user_datastore.add_role_to_user(admin, admin_role)
     """
     if not user_datastore.get_user('94589040@qq.com'):
         admin = user_datastore.create_user(email='94589040@qq.com',

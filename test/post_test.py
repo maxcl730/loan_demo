@@ -85,7 +85,7 @@ def test_loan_policy():
 
 
 def test_installments():
-    url = "http://127.0.0.1:5000/api/v1/loan/installment_detail?amount=10000&term=6&apr=5.3&method=B"
+    url = "http://127.0.0.1:5000/api/v1/loan/installment_detail?amount=10000&term=6&apr=5.3&method=A"
     r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
@@ -98,6 +98,13 @@ def test_repayment(auth_info, application_id, term):
         'term': term,
     }
     r = requests.post(url, data=params)
+    r.encoding = 'utf-8'
+    return r.json()
+
+
+def test_repayment_list(auth_info):
+    url = "http://127.0.0.1:5000/api/v1/loan/repayment_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
 
@@ -131,9 +138,9 @@ if __name__ == '__main__':
     }
 
     application_info = {
-        'amount': 30000,
-        'term': 3,
-        'apr': 5.8,
+        'amount': 10000,
+        'term': 6,
+        'apr': 5.5,
         'method': 'A'
     }
     #user_token = test_member_register(user_info)
@@ -141,18 +148,20 @@ if __name__ == '__main__':
     pprint(user_token)
     user_token = test_user_auth(user_token['data'])
     pprint(user_token)
-    resp_data = test_user_info(user_token['data'])
-    pprint(resp_data)
+    #resp_data = test_user_info(user_token['data'])
+    #pprint(resp_data)
     #resp_data = test_user_debit(user_token['data'], debit_info)
     #pprint(resp_data)
     #resp_data = test_user_apply(user_token['data'], application_info)
     #pprint(resp_data)
-    resp_data = test_user_applications_get(user_token['data'])
-    pprint(resp_data)
-    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=6)
-    pprint(resp_data)
-    #resp_data = test_repayment(user_token['data'], application_id=1, term=1)
+    #resp_data = test_user_applications_get(user_token['data'])
     #pprint(resp_data)
+    #resp_data = test_user_applications_get_by_id(user_token['data'], application_id=2)
+    #pprint(resp_data)
+    resp_data = test_repayment(user_token['data'], application_id=2, term=1)
+    pprint(resp_data)
+    resp_data = test_repayment_list(user_token['data'])
+    pprint(resp_data)
     #resp_data = test_loan_policy()
     #pprint(resp_data)
     #resp_data = test_installments()

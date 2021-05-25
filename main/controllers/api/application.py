@@ -82,7 +82,7 @@ class LoanApplicationApi(Resource):
                     'status': fields.Integer,
                     'status_text': fields.String,
                     'created_time': TimestampValue(attribute='created_time'),
-                    'updated_time': TimestampValue(attribute='created_time')
+                    'updated_time': TimestampValue(attribute='updated_time')
                 })),
             }
             applications = member.applications.all()
@@ -101,11 +101,11 @@ class LoanApplicationApi(Resource):
                     'status': fields.Integer,
                     'status_text': fields.String,
                     'created_time': TimestampValue(attribute='created_time'),
-                    'updated_time': TimestampValue(attribute='created_time')
+                    'updated_time': TimestampValue(attribute='updated_time')
                 }),
                 'installments': fields.List(
                     fields.Nested({
-                        'term': fields.Integer,
+                        'sequence': fields.Integer,
                         'payment_due_date': TimestampValue(attribute='payment_due_date'),
                         'fee': fields.Float,
                         'paid_status': fields.Integer,
@@ -116,7 +116,7 @@ class LoanApplicationApi(Resource):
             # 获取指定的贷款申请
             application = member.applications.filter_by(id=args['application_id']).first()
             if application:
-                installments = Repayment.query.filter_by(application_id=args['application_id']).order_by(Repayment.term).all()
+                installments = Repayment.query.filter_by(application_id=args['application_id']).order_by(Repayment.sequence).all()
             else:
                 installments = None
             data = {
