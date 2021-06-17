@@ -1,0 +1,66 @@
+{% extends "manage/base.html" %}
+{% from "manage/_macros.html" import render_pagination %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}APR{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ makeup_static_url('plugins/bootstrap3-editable/css/bootstrap-editable.css') }}">
+{% endblock %}
+{% block navbar %}
+    <h1>{{ _fsdomain('APR') }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        {% include 'manage/message.html' %}
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tr>
+                <th width="120">Term(months)</th>
+                <th>APR(%)</th>
+            </tr>
+            {% for item in list %}
+            <tr>
+                <td>{{ item['term'] }}</td>
+                <td><a href="#" id="apr_{{ item['term'] }}">{{ item['apr'] }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ makeup_static_url('plugins/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
+    <script type="text/javascript">
+        function confirm_delete(){
+            if (!confirm("确认删除？")) {  window.event.returnValue = false;  }
+        }
+        //turn to inline mode
+        $.fn.editable.defaults.mode = 'inline';
+        $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+        {% for item in list %}
+            $(function () {
+                $('#apr_{{ item['term'] }}').editable({
+                    type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                    title: "apr",              //编辑框的标题
+                    name: "apr",
+                    pk: '{{ item['term'] }}',        //primary key of record to be updated (ID in db)
+                    url: '{{ url_for('manage_system.update_apr') }}',               // url to server-side script to process submitted value
+                    disabled: false,             //是否禁用编辑
+                    emptytext: 0,          //空值的默认文本
+                    mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup
+                    validate: function (value) { //字段验证
+                        if (!$.trim(value)) {
+                            return 'Not null';
+                        }
+                    },
+                    success: function(response, newValue) {
+                        if(response.code == '-1') return response.message;
+                    }
+                });
+            });
+        {% endfor %}
+    </script>
+{% endblock %}

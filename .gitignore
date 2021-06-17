@@ -7,6 +7,7 @@
 pyenv
 #*#
 build
+loan_policy.json
 source/_static*
 source/_templates*
 flask_admin/tests/tmp

@@ -33,16 +33,30 @@ class MonthInstallment:
         elif self.method == 'B':
             return "corpus:{},  terms:{},  apr:{:.4f}, method:{}".format(self.corpus, self.periods, self.m_rate * 12, "Equal principle payment")
 
-    @staticmethod
-    def loan_policy():
+    @classmethod
+    def loan_policy(cls):
         # 返回小贷规则
         json_path = op.dirname(op.abspath(__file__)) + "/../../main/loan_policy.json"
-        with open(json_path) as f:
+        with open(json_path, 'r') as f:
             policy = json.load(f, encoding='utf8')
         if type(policy) is dict:
             return policy
         else:
             return None
+
+    @classmethod
+    def update_apr(cls, term, apr):
+        # 更新ARP
+        json_path = op.dirname(op.abspath(__file__)) + "/../../main/loan_policy.json"
+        policy = cls.loan_policy()
+        if term in policy['term']:
+            term_index = policy['term'].index(term)
+            policy['apr'][term_index] = apr
+            with open(json_path, 'w') as f:
+                json.dump(policy, f)  # ensure_ascii
+            return True
+        else:
+            return False
 
     def equal_amortization(self):
         """

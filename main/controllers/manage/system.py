@@ -4,6 +4,7 @@ from flask_security import login_required
 from common.helper import ops_render
 from main.models.admin import User
 from extensions import user_datastore, set_password
+from common.helper.loan import MonthInstallment
 from main.form import UserForm, UserPasswdForm
 from common import Log
 
@@ -87,7 +88,8 @@ def user_reset_password(uid=None):
     if len(uid) != 24:
         abort(404)
     form = UserPasswdForm()
-    user = User.objects(id=ObjectId(uid)).first()
+    user = user_datastore.find_user(id=uid)
+    # user = User.objects(id=ObjectId(uid)).first()
     if user is None:
         abort(404)
     response_data = {
@@ -107,8 +109,64 @@ def user_reset_password(uid=None):
 @login_required
 def delete_user(uid=None):
     if uid and len(uid) == 24:
-        user_datastore.delete_user(User.objects(id=ObjectId(uid)).first())
+        user_datastore.delete_user(User.objects(user_datastore.find_user(id=uid)).first())
         flash('账号已删除!')
         return redirect(url_for('manage_system.list_user'))
     else:
         abort(404)
+
+
+@system_bp.route("/edit_apr", methods=['GET'])
+@login_required
+def edit_apr():
+    apr_list = list()
+    policy = MonthInstallment.loan_policy()
+    for n in range(0, len(policy['term'])):
+        apr_list.append({'term': policy['term'][n],
+                         'apr': policy['apr'][n]
+                         })
+    Log.info(apr_list)
+    # Log.info(policy['apr'])
+    response_data = {
+        'list': apr_list
+    }
+    return ops_render('manage/system/aprlist.html', response_data)
+
+
+@system_bp.route("/ajax_apr/update", methods=['PUT'])
+@login_required
+def update_apr():
+    policy = MonthInstallment.loan_policy()
+    if request.method != 'PUT':
+        flash('Request method is not allowed.')
+        return jsonify({'code': -1, 'message': 'Request method is not allowed.', 'data': {}})
+
+    args = request.values
+    try:
+        term_value = int(args.get('pk', ''))
+    except ValueError:
+        return jsonify({'code': -1, 'message': 'Invalid term', 'data': {}})
+    if term_value not in policy['term']:
+        return jsonify({'code': -1, 'message': 'Invalid term', 'data': {}})
+
+    try:
+        apr_value = int(args.get('value', None))
+    except ValueError:
+        return jsonify({'code': -1, 'message': 'Invalid APR', 'data': {}})
+
+    name = args.get('name', None)
+    if name is None:
+        return jsonify({'code': -1, 'message': 'Miss parameter or invalid parameter value.', 'data': {}})
+
+    if name == 'apr':
+        if apr_value < 0 or apr_value > 36:
+            return jsonify({'code': -1, 'message': 'APR must greater then 0 and less then 37', 'data': {}})
+        else:
+            # 修改apr
+            if MonthInstallment.update_apr(term=term_value, apr=apr_value):
+                return jsonify({'code': 0, 'message': 'Updating APR success.', 'data': {}})
+            else:
+                return jsonify({'code': -1, 'message': 'Updating APR Failed.', 'data': {}})
+    else:
+        return jsonify({'code': -1, 'message': 'Miss parameter or invalid parameter value.', 'data': {}})
+
