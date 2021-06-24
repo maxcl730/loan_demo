@@ -125,7 +125,7 @@ def edit_apr():
         apr_list.append({'term': policy['term'][n],
                          'apr': policy['apr'][n]
                          })
-    Log.info(apr_list)
+    # Log.info(apr_list)
     # Log.info(policy['apr'])
     response_data = {
         'list': apr_list
@@ -170,3 +170,43 @@ def update_apr():
     else:
         return jsonify({'code': -1, 'message': 'Miss parameter or invalid parameter value.', 'data': {}})
 
+
+@system_bp.route("/edit_amount", methods=['GET'])
+@login_required
+def edit_amount():
+    policy = MonthInstallment.loan_policy()
+    amount_list = policy['amount']['available'].copy()
+    # Log.info(amount_list)
+    response_data = {
+        'list': amount_list,
+        'amount_count': len(amount_list)
+    }
+    return ops_render('manage/system/amountlist.html', response_data)
+
+
+@system_bp.route("/ajax_amount/update", methods=['POST'])
+@login_required
+def update_amount():
+    policy = MonthInstallment.loan_policy()
+    if request.method != 'POST':
+        flash('Request method is not allowed.')
+        return jsonify({'code': -1, 'message': 'Request method is not allowed.', 'data': {}})
+
+    available_data = request.form.getlist("available[]")
+    Log.info(available_data)
+    available = list()
+    for value in available_data:
+        Log.info(value)
+        if value != '' and value is not None and len(value) > 0:
+            try:
+                if policy['amount']['min'] <= int(value) <= policy['amount']['max']:
+                    available.append(int(value))
+            except ValueError:
+                Log.info(len(value))
+                return jsonify({'code': -1, 'message': 'Available amount illegal.', 'data': {}})
+    Log.info(available)
+    # 修改apr
+    if MonthInstallment.update_amount(available=available):
+        return jsonify({'code': 0, 'message': 'Updating amount success.', 'data': {}})
+    else:
+        return jsonify({'code': -1, 'message': 'Updating amount Failed.', 'data': {}})

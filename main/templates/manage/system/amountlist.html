@@ -1,0 +1,96 @@
+{% extends "manage/base.html" %}
+{% from "manage/_macros.html" import render_pagination %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Amount{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ makeup_static_url('plugins/bootstrap3-editable/css/bootstrap-editable.css') }}">
+{% endblock %}
+{% block navbar %}
+    <h1>{{ _fsdomain('Amount') }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        {% include 'manage/message.html' %}
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tr>
+                <a href="#" id="AddMoreFileBox" class="btn btn-info">{{ _fsdomain('Add new') }}</a></span></p>
+            </tr>
+            <tr>
+                <div id="InputsWrapper">
+                {% for item in list %}
+                    <div><input type="text" name="amount[]" id="field_{{ loop.index }}" value="{{ item }}"/><a href="#" class="removeclass"> x</a></div>
+                {% endfor %}
+                </div>
+            </tr>
+            <tr>
+                <a class="btn btn-primary" href="#" id="submitbutton" >{{ _fsdomain('Submit') }}</a>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script>
+    $(document).ready(function() {
+        var MaxInputs       = 50; //maximum input boxes allowed
+        var InputsWrapper   = $("#InputsWrapper"); //Input boxes wrapper ID
+        var AddButton       = $("#AddMoreFileBox"); //Add button ID
+
+        // var x = InputsWrapper.length; //initlal text box count
+        var x = InputsWrapper.children('div').length;
+        var FieldCount={{ amount_count }}; //to keep track of text box added
+
+        $(AddButton).click(function (e)  //on add input button click
+        {
+                if(x <= MaxInputs) //max input box allowed
+                {
+                    FieldCount++; //text box added increment
+                    //add input box
+                    $(InputsWrapper).append('<div><input type="text" name="amount[]" id="field_'+ FieldCount +'" value="0"/><a href="#" class="removeclass"> x</a></div>');
+                    x++; //text box increment
+
+                }
+        return false;
+        });
+
+        $("body").on("click",".removeclass", function(e){ //user click on remove text
+                if( x > 1 ) {
+                        $(this).parent('div').remove(); //remove text box
+                        x--; //decrement textbox
+                }
+        return false;
+        })
+    });
+    </script>
+    <script>
+        $("#submitbutton").click(function(e) {
+            e.preventDefault();
+            var available = new Array();
+            var x = $("#InputsWrapper").children('div').length;
+            //alert(x);
+            for (i = 1; i <= x; i++) {
+                available[i-1] = $("#field_"+i).val()
+                //$("input[id='field_' + i]").val();
+            }
+            $.ajax({
+                type: "post",
+                url: "{{ url_for('manage_system.update_amount') }}",
+                dataType : "json",
+                //contentType : "application/json",
+                data: {'available': available},
+                //data: JSON.stringify(available),
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function(xhr, type){
+                    alert('error')
+                }
+            });
+        });
+    </script>
+{% endblock %}

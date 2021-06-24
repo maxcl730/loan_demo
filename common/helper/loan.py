@@ -58,6 +58,19 @@ class MonthInstallment:
         else:
             return False
 
+    @classmethod
+    def update_amount(cls, available=False, amount_min=300, amount_max=30000):
+        # 更新ARP
+        json_path = op.dirname(op.abspath(__file__)) + "/../../main/loan_policy.json"
+        policy = cls.loan_policy()
+        policy['amount']['min'] = amount_min
+        policy['amount']['max'] = amount_max
+        if type(available) is list:
+            policy['amount']['available'] = available
+        with open(json_path, 'w') as f:
+            json.dump(policy, f)  # ensure_ascii
+        return True
+
     def equal_amortization(self):
         """
         等额本息，比较常用，似乎是贷款的默认计算方式，无论银行还是网贷主要应用等额本息
