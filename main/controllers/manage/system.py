@@ -205,7 +205,7 @@ def update_amount():
                 Log.info(len(value))
                 return jsonify({'code': -1, 'message': 'Available amount illegal.', 'data': {}})
     Log.info(available)
-    # 修改apr
+    # 修改amount
     if MonthInstallment.update_amount(available=available):
         return jsonify({'code': 0, 'message': 'Updating amount success.', 'data': {}})
     else:
