@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="{{ makeup_static_url('plugins/datepicker/bootstrap-datepicker.min.css') }}">
 {% endblock %}
 {% block navbar %}
-    <h1>{{ _fsdomain('Applications') }}</h1>
+    <h1>{{ _fsdomain('Applications') }} of product({{ product_id }})</h1>
 {% endblock %}
 
 {% include 'manage/message.html' %}
 
 {% block content %}
 <div class="box box-primary">
+    {% if product_id == 0 %}
     <div class="box-header with-border">
         <form action="{{ url_for('manage_application.' + filter) }}" method="post" class="form horizontal" role="form" name="search_form">
             {{ form.hidden_tag() }}
@@ -27,6 +28,7 @@
                 <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>
         </form>
     </div>
+    {% endif %}
     <div class="box-body">
         <table class="table table-bordered">
             <tr>
@@ -70,7 +72,9 @@
             {% endfor %}
         </table>
     </div>
-    {{ render_pagination(list, 'manage_application.' + filter) }}
+    {% if product_id == 0 %}
+        {{ render_pagination(list, 'manage_application.' + filter) }}
+    {% endif %}
 </div>
 {% endblock %}
 {% block scripts %}

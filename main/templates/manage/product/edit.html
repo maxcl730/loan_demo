@@ -14,7 +14,7 @@
 {% block content %}
 <div class="box box-primary">
     <div class="box-header with-border">
-        <form action="{{ url_for('manage_product.update_product', product_id=product.id) }}" method="post" class="form horizontal" role="form" name="update_product_form">
+        <form action="{{ url_for('manage_product.update_product', product_id=product.id) }}" method="post" class="form horizontal" role="form" id="update_product_form" name="update_product_form">
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             <br class="form-group">
@@ -72,7 +72,9 @@
                     </tr>
                     <tr>
                         <td>
-                            {{ form.submit }}
+                            {{ form.submit }} &nbsp;&nbsp;
+                            <input type="button" class="btn btn-info" onclick="formReset()" value="{{ _fsdomain('Reset') }}">&nbsp;&nbsp;
+                            <a class="btn btn-primary" href="{{ url_for('manage_product.list_product') }}">{{ _fsdomain('Back') }}</a>
                         </td>
                     </tr>
                 </table>
@@ -81,6 +83,12 @@
 </div>
 {% endblock %}
 {% block scripts %}
+    <script>
+    function formReset()
+    {
+        document.getElementById("update_product_form").reset();
+    }
+    </script>
     <script type="text/javascript">
        function viewrepayment(url)
        {

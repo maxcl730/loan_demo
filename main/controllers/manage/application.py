@@ -34,8 +34,21 @@ def list_application(page=1):
     response_data = {
         'list': applications,
         'form': form,
+        'product_id': 0,
         # 'count_list': count_list,
         'filter': sys._getframe().f_code.co_name,
+    }
+
+    return ops_render('manage/application/index.html', response_data)
+
+
+@application_bp.route("/filter_application/<int:product_id>", methods=['GET'])
+@login_required
+def filter_application(product_id=0):
+    applications = Application.query.filter_by(product_id=product_id).paginate()
+    response_data = {
+        'list': applications,
+        'product_id': product_id,
     }
 
     return ops_render('manage/application/index.html', response_data)

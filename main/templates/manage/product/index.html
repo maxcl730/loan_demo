@@ -67,7 +67,7 @@
                 <td>
                     {% if item.applications_count > 0 %}
                         <a class="btn btn-primary" href="{{ url_for('manage_product.edit_product', product_id=item.id) }}">{{ _fsdomain('Edit') }}</a>
-                        <a class="btn btn-primary" href="javascript:void(0)">{{ _fsdomain('Report') }}</a>
+                        <a class="btn btn-primary" href="{{ url_for('manage_application.filter_application', product_id=item.id) }}">{{ _fsdomain('Report') }}</a>
                     {% else %}
                         <a class="btn btn-primary" href="{{ url_for('manage_product.edit_product', product_id=item.id) }}">{{ _fsdomain('Edit') }}</a>
                         <a class="btn btn-primary" onclick="confirm_delete()" href="{{ url_for('manage_product.delete_product', product_id=item.id) }}">{{ _fsdomain('Delete') }}</a>
