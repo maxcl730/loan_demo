@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from sympy import solve
 from sympy import abc
 from common import Log
+# from math import ceil
 
 
 class MonthInstallment:
@@ -105,7 +106,7 @@ class MonthInstallment:
             fee_list = self.equal_principle_payment()
         else:
             return None
-        Log.info(fee_list)
+        # Log.info(fee_list)
         installments_detail = list()
         for i in range(0, self.periods):
             installments_detail.append({

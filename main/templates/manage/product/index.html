@@ -1,0 +1,100 @@
+{% extends "manage/base.html" %}
+{% from "manage/_macros.html" import render_pagination %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}{{ _fsdomain('Products') }}{% endblock %}
+{% block css %}
+{% endblock %}
+{% block navbar %}
+    <h1>{{ _fsdomain('Products') }}</h1>
+{% endblock %}
+
+{% include 'manage/message.html' %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form action="{{ url_for('manage_product.add_product') }}" method="post" class="form horizontal" role="form" name="add_product_form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="only") }}
+            <br class="form-group">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <label class="label-sm">{{ _fsdomain('Amount') }}</label></br> {{ form.amount }}
+                        </td>
+                        <td>
+                            <label class="label-sm">{{ _fsdomain('Terms') }}</label></br> {{ form.terms }} Months
+                        </td>
+                        <td>
+                            <label class="label-sm">{{ _fsdomain('Fees') }}</label></br>{{ form.fees }} </br>
+                            {% for subfield in form.fee_payment %}
+                                {{ subfield }}
+                                {{ subfield.label }}
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <label class="label-sm">{{ _fsdomain('Rate/Month') }}</label></br> {{ form.rate_per_month }} %
+                        </td>
+                        <td>
+                            </br>
+                            {{ form.submit }}
+                        </td>
+                    </tr>
+                </table>
+        </form>
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>{{ _fsdomain('Amount') }}</th>
+                <th>{{ _fsdomain('Terms') }}</th>
+                <th>{{ _fsdomain('Fees') }}</th>
+                <th>{{ _fsdomain('Rate/Month') }}</th>
+                <th>{{ _fsdomain('Applications') }}</th>
+                <th>{{ _fsdomain('Available') }}</th>
+                <th>{{ _fsdomain('Action') }}</th>
+            </tr>
+            {% for item in list.items %}
+            <tr>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.terms }}</td>
+                <td>{{ item.fees }}  ({{ item.fee_payment_text }})</td>
+                <td>{{ item.rate_per_month }}%</td>
+                <td>{{ item.applications_count }}</td>
+                <td>{{ item.available_text }}</td>
+                <td>
+                    {% if item.applications_count > 0 %}
+                        <a class="btn btn-primary" href="{{ url_for('manage_product.edit_product', product_id=item.id) }}">{{ _fsdomain('Edit') }}</a>
+                        <a class="btn btn-primary" href="javascript:void(0)">{{ _fsdomain('Report') }}</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ url_for('manage_product.edit_product', product_id=item.id) }}">{{ _fsdomain('Edit') }}</a>
+                        <a class="btn btn-primary" onclick="confirm_delete()" href="{{ url_for('manage_product.delete_product', product_id=item.id) }}">{{ _fsdomain('Delete') }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {{ render_pagination(list, 'manage_product.' + filter) }}
+</div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        function confirm_delete(){
+            if (!confirm("Do you confirm delete product？")) {  window.event.returnValue = false;  }
+        }
+    </script>
+    <script type="text/javascript">
+       function viewrepayment(url)
+       {
+        window.open(url,"Repayment","fullscreen=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no, copyhistory=no,width=650,height=500,left=200,top=300");
+           //var strUrl = "<%=path %>/admin/shenqing/shenqingHuifu.jsp?id="+id;
+         //  alert( "用户名："+document.form1.username.value+",密码："+document.form1.passwd.value);
+           //var strUrl = "<%=path %>/shenqingHuifu.action?id="+id;
+          // window.location.href=strUrl;
+       }
+
+    </script>
+{% endblock %}

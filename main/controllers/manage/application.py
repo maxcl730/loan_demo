@@ -9,6 +9,7 @@ from main.models.application import Application
 from main.models.loan import Repayment
 from main.form import ApplicationSearchForm
 from common.helper.loan import MonthInstallment
+from decimal import Decimal
 from common.date import Date
 from common import Log
 
@@ -47,14 +48,19 @@ def change_application_status(application_id=0, status=0):
     if application:
         if status == 1:
             application.status = int(status)
-            ml = MonthInstallment(corpus=application.amount,
-                                  periods=application.term,
-                                  y_rate=application.apr/100,
-                                  method=application.method
+            ml = MonthInstallment(corpus=application.product.amount,
+                                  periods=application.product.terms,
+                                  y_rate=application.product.rate_per_month * 12 / 100,
+                                  method='A'
                                   )
             # Log.info(ml.info())
             # Log.info(ml.installments(start_date=Date.today_date()))
-            for installment in ml.installments(start_date=Date.today_date()):
+            installments_detail = ml.installments(start_date=Date.today_date())
+            if installments_detail:
+                if application.product.fee_payment == 2:
+                    installments_detail[-1]['fee'] = Decimal(installments_detail[-1]['fee'] + application.product.fees).quantize(Decimal("0.00"))
+
+            for installment in installments_detail:
                 new_repayment = Repayment(application_id=application.id,
                                           sequence=installment['sequence'],
                                           payment_due_date=installment['payment due date'],

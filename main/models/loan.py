@@ -38,3 +38,43 @@ class Repayment(db.Model):
 
     def __str__(self):
         return self.id
+
+
+class Product(db.Model):
+    __tablename__ = 'product'
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
+    amount = db.Column(db.Integer, default=0, nullable=False)
+    terms = db.Column(db.Integer, default=0, nullable=False)  # months
+    fees = db.Column(db.Float, default=0, nullable=False)
+    fee_payment = db.Column(db.SMALLINT, default=0, nullable=False)  # 1:pre-paid, 2: post-paid
+    rate_per_month = db.Column(db.Float, default=0, nullable=False)
+    available = db.Column(db.SMALLINT, default=0, nullable=False)  # 0: unavailable, 1: available
+    applications_count = db.Column(db.Integer, default=0, nullable=False)
+    applications = db.relationship('Application', backref="product", lazy='dynamic')
+    updated_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    created_time = db.Column(db.DateTime, default=datetime.now)
+
+    @property
+    def available_text(self):
+        if self.available == 0:
+            text = 'No'  # 逾期
+        else:
+            text = 'Yes'  # 待还款
+
+        return text
+
+    @property
+    def fee_payment_text(self):
+        if self.fee_payment == 1:
+            text = 'pre-paid'
+        elif self.fee_payment == 2:
+            text = 'post-paid'
+        else:
+            text = 'unknown'
+        return text
+
+    def __repr__(self):
+        return "<Model Production `{}`>".format(self.id)
+
+    def __str__(self):
+        return self.id

@@ -1,0 +1,95 @@
+{% extends "manage/base.html" %}
+{% from "manage/_macros.html" import render_pagination %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}{{ _fsdomain('Products') }}{% endblock %}
+{% block css %}
+{% endblock %}
+{% block navbar %}
+    <h1>{{ _fsdomain('Products') }}</h1>
+{% endblock %}
+
+{% include 'manage/message.html' %}
+
+{% block content %}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <form action="{{ url_for('manage_product.update_product', product_id=product.id) }}" method="post" class="form horizontal" role="form" name="update_product_form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="only") }}
+            <br class="form-group">
+                <table class="table table-bordered">
+                    {% if product.applications_count == 0 %}
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Amount') }}</label></br> {{ form.amount }}
+                            </td>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Terms') }}</label></br> {{ form.terms }} Months
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Fees') }}</label></br>{{ form.fees }} </br>
+                                {% for subfield in form.fee_payment %}
+                                    {{ subfield }}
+                                    {{ subfield.label }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Rate/Month') }}</label></br> {{ form.rate_per_month }} %
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Amount') }}</label></br> {{ form.amount.data }}
+                            </td>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Terms') }}</label></br> {{ form.terms.data }} Months
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Fees') }}</label></br>{{ form.fees.data }} &nbsp;&nbsp; ( {{ product.fee_payment_text }} )
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="label-sm">{{ _fsdomain('Rate/Month') }}</label></br> {{ form.rate_per_month.data }} %
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <label class="label-sm">{{ _fsdomain('Available') }}</label></br>
+                            {{ form.available }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ form.submit }}
+                        </td>
+                    </tr>
+                </table>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+       function viewrepayment(url)
+       {
+        window.open(url,"Repayment","fullscreen=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no, copyhistory=no,width=650,height=500,left=200,top=300");
+           //var strUrl = "<%=path %>/admin/shenqing/shenqingHuifu.jsp?id="+id;
+         //  alert( "用户名："+document.form1.username.value+",密码："+document.form1.passwd.value);
+           //var strUrl = "<%=path %>/shenqingHuifu.action?id="+id;
+          // window.location.href=strUrl;
+       }
+
+    </script>
+{% endblock %}

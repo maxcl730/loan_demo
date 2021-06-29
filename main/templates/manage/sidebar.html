@@ -10,6 +10,16 @@
                 </li>
                 <li class="treeview">
                     <a href="#">
+                        <i class="fa fa-money"></i>
+                        <span>{{ _fsdomain('Products') }}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url_for('manage_product.list_product')}}"><i class="fa fa-circle-o"></i>  {{ _fsdomain('All') }}</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
                         <i class="fa fa-send"></i>
                         <span>{{ _fsdomain('Applications') }}</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -18,7 +28,6 @@
                         <li><a href="{{ url_for('manage_application.list_application')}}"><i class="fa fa-circle-o"></i>  {{ _fsdomain('All') }}</a></li>
                     </ul>
                 </li>
-
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-user"></i>
@@ -38,8 +47,8 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{ url_for('manage_system.list_user') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Users') }}</a></li>
-                        <li><a href="{{ url_for('manage_system.edit_apr') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('APR') }}</a></li>
-                        <li><a href="{{ url_for('manage_system.edit_amount') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Amount') }}</a></li>
+                        <!--<li><a href="{{ url_for('manage_system.edit_apr') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('APR') }}</a></li>-->
+                        <!--<li><a href="{{ url_for('manage_system.edit_amount') }}"><i class="fa fa-circle-o"></i> {{ _fsdomain('Amount') }}</a></li>-->
                 </li>
             </ul>
         </section>

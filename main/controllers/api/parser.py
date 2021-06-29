@@ -157,6 +157,16 @@ member_debit_parser.add_argument(
     help="Member's debit name"
 )
 
+# 用户查看产品分期明细
+product_installments_get_parser = uid_token_parser.copy()
+product_installments_get_parser.add_argument(
+    'product_id',
+    type=int,
+    required=True,
+    location=['args', 'form', 'json'],
+    # help='Application_id is required.'
+)
+
 # 用户申请试用
 application_get_parser = uid_token_parser.copy()
 application_get_parser.add_argument(
@@ -170,32 +180,11 @@ application_get_parser.add_argument(
 # amount/term/apr/method
 application_post_parser = uid_token_parser.copy()
 application_post_parser.add_argument(
-    'amount',
+    'product_id',
     type=int,
     required=True,
     location=['form', 'json'],
     help="Application's amount is required."
-)
-application_post_parser.add_argument(
-    'term',
-    type=int,
-    required=True,
-    location=['form', 'json'],
-    help="Application's term is required."
-)
-application_post_parser.add_argument(
-    'apr',
-    type=float,
-    required=True,
-    location=['form', 'json'],
-    help="Apr is required."
-)
-application_post_parser.add_argument(
-    'method',
-    type=str,
-    required=False,
-    location=['form', 'json'],
-    help="Method is required."
 )
 
 # 还款参数

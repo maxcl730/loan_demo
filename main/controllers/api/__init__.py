@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from .member import MemberLoginApi, MemberAuthApi, MemberRegisterApi, MemberInfoApi, MemberDebitApi
-from .loan import LoanPolicyApi, InstallmentsDetailApi, RepaymentApi, RepaymentListApi
+from .loan import RepaymentApi, RepaymentListApi, LoanProductsApi, LoanProductInstallmentsApi  # LoanPolicyApi, InstallmentsDetailApi
 from .application import LoanApplicationApi
-# from .homepage import HomepageApi
 
 
 def api_setup(api=None):
@@ -38,18 +37,18 @@ def api_setup(api=None):
         '/member/debit',
         endpoint='api_member_debit'
     )
-
+    """
     api.add_resource(
         LoanPolicyApi,
         '/loan/policy',
         endpoint='api_loan_policy'
     )
-
     api.add_resource(
         InstallmentsDetailApi,
         '/loan/installment_detail',
         endpoint='api_loan_installment_detail'
     )
+    """
 
     api.add_resource(
         LoanApplicationApi,
@@ -67,4 +66,17 @@ def api_setup(api=None):
         RepaymentListApi,
         '/loan/repayment_list',
         endpoint='api_loan_repayment_list'
+    )
+
+    # add by logan 2020-6-29
+    api.add_resource(
+        LoanProductsApi,
+        '/loan/products_list',
+        endpoint='api_loan_products_list'
+    )
+
+    api.add_resource(
+        LoanProductInstallmentsApi,
+        '/loan/product_installments',
+        endpoint='api_loan_product_installments'
     )

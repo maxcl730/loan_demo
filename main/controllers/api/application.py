@@ -2,30 +2,21 @@
 from flask import current_app
 from flask_restful import Resource, fields
 from main.models.application import Application
-from main.models.loan import Repayment
+from main.models.loan import Product, Repayment
 from database import db
 from .parser import application_post_parser, application_get_parser
 from common.helper.member import check_token
 from common.helper.loan import MonthInstallment
 from common.helper.mapping import TimestampValue
+from decimal import Decimal
 from common.http import Http
 from common.date import Date
 from common import Log
 
 
-class MemberAvatar(fields.Raw):
+class ProductValue(fields.Raw):
     def format(self, value):
-        return value.avatar
-
-
-class MemberNickname(fields.Raw):
-    def format(self, value):
-        return value.nickname
-
-
-class MemberCreatedTimeStamp(fields.Raw):
-    def format(self, value):
-        return Date.datetime_toTimestamp(value.created_time)
+        return value
 
 
 class LoanApplicationApi(Resource):
@@ -76,9 +67,11 @@ class LoanApplicationApi(Resource):
                 'applications_count': fields.Integer,
                 'applications': fields.List(fields.Nested({
                     'id': fields.Integer,
-                    'amount': fields.Integer,
-                    'term': fields.Integer,
-                    'apr': fields.Float,
+                    'amount': ProductValue(attribute='product.amount'),
+                    'terms': ProductValue(attribute='product.terms'),
+                    'fees': ProductValue(attribute='product.fees'),
+                    'fee_payment':ProductValue(attribute='product.fee_payment_text'),
+                    'rate_per_month': ProductValue(attribute='product.rate_per_month'),
                     'status': fields.Integer,
                     'status_text': fields.String,
                     'created_time': TimestampValue(attribute='created_time'),
@@ -95,9 +88,11 @@ class LoanApplicationApi(Resource):
             data_format = {
                 'application': fields.Nested({
                     'id': fields.Integer,
-                    'amount': fields.Integer,
-                    'term': fields.Integer,
-                    'apr': fields.Float,
+                    'amount': ProductValue(attribute='product.amount'),
+                    'terms': ProductValue(attribute='product.terms'),
+                    'fees': ProductValue(attribute='product.fees'),
+                    'fee_payment':ProductValue(attribute='product.fee_payment_text'),
+                    'rate_per_month': ProductValue(attribute='product.rate_per_month'),
                     'status': fields.Integer,
                     'status_text': fields.String,
                     'created_time': TimestampValue(attribute='created_time'),
@@ -114,11 +109,12 @@ class LoanApplicationApi(Resource):
                 )
             }
             # 获取指定的贷款申请
+            installments = None
             application = member.applications.filter_by(id=args['application_id']).first()
             if application:
-                installments = Repayment.query.filter_by(application_id=args['application_id']).order_by(Repayment.sequence).all()
-            else:
-                installments = None
+                if application.status == 1:
+                    installments = Repayment.query.filter_by(application_id=args['application_id']).order_by(Repayment.sequence).all()
+
             data = {
                 'application': application,
                 'installments': installments,
@@ -151,26 +147,12 @@ class LoanApplicationApi(Resource):
             required: true
             schema:
               required:
-                - amount
-                - term
-                - apr
+                - product_id
               properties:
-                amount:
+                product_id:
                   type: int
-                  description: 贷款总额
-                  example: 10000
-                term:
-                  type: int
-                  description: 分期数
-                  example: 6
-                apr:
-                  type: float
-                  description: 年利率
-                  example: 5.3
-                method:
-                  type: string
-                  description: 还款方式, 默认是A-Equal_Amortization
-                  example: A/B
+                  description: product_id
+                  example: 9
         responses:
           200:
             description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
@@ -184,17 +166,27 @@ class LoanApplicationApi(Resource):
             member = check_token(uid=args['uid'], token=args['token'])
         except Exception as e:
             return Http.gen_failure_response(message=e.__str__())
-        # 校验参数
-        policy = MonthInstallment.loan_policy()
-        if policy['amount']['min'] <= args['amount'] <= policy['amount']['max'] and args['term'] in policy['term'] and args['apr'] in policy['apr']:
-            new_application = Application(
-                amount=args['amount'],
-                term=args['term'],
-                apr=args['apr'],
-                method=args.get('method', 'A'),
-                member_id=member.id
-            )
-            db.session.add(new_application)
-            db.session.commit()
-            return Http.gen_success_response()
-        return Http.gen_failure_response(message='Illegal application.')
+
+        product = Product.query.filter_by(id=args['product_id']).first()
+        if product:
+            ml = MonthInstallment(corpus=product.amount,
+                                  periods=product.terms,
+                                  y_rate=product.rate_per_month * 12 / 100,
+                                  method='A')
+            # Log.info(ml.info())
+            installments_detail = ml.installments(start_date=Date.today_date())
+            if installments_detail:
+                if product.fee_payment == 2:
+                    installments_detail[-1]['fee'] = Decimal(installments_detail[-1]['fee'] + product.fees).quantize(Decimal("0.00"))
+
+                new_application = Application(
+                    product_id=args['product_id'],
+                    member_id=member.id
+                )
+                db.session.add(new_application)
+                product.applications_count = product.applications_count + 1
+                db.session.add(product)
+                db.session.commit()
+                return Http.gen_success_response()
+
+        return Http.gen_failure_response(message='Illegal apply.')

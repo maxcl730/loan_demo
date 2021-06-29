@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from flask_wtf import FlaskForm as Form
-from wtforms import StringField, SelectField, TextField, TextAreaField,  SubmitField, PasswordField
+from wtforms import IntegerField, StringField, DecimalField, SelectField, RadioField, TextAreaField,  SubmitField, PasswordField
 from wtforms_components import DateTimeField, DateRange, Email
-from wtforms.validators import DataRequired, Required, Length, EqualTo
+from wtforms.validators import DataRequired, Required, Length, EqualTo, NumberRange
 # from flask_wtf.file import FileRequired, FileAllowed
 from common.helper.mapping import STATUS, RUNNING_STATUS_WITH_APPLICATION
 
@@ -23,6 +23,59 @@ class CustomForm(Form):
                     render_kw['class'] = class2 + ' ' + class1
                 render_kw = dict(other_kw, **render_kw)
             return field.widget(field, **render_kw)
+
+
+class ProductForm(CustomForm):
+    amount = IntegerField(label='Amount',
+                          validators=[DataRequired(), NumberRange(min=100, max=50000)],
+                          default=300,
+                          render_kw={
+                              "class": 'input-sm',
+                              "type": 'number',
+                              "step": '100',
+                              # "readonly": 'True'
+                          })
+    terms = IntegerField(label='Terms',
+                         validators=[DataRequired(), NumberRange(min=1, max=120)],
+                         default=3,
+                         render_kw={
+                            "class": 'input-sm',
+                            "type": 'number'
+                         })
+    fees = DecimalField(label='Fees',
+                        places=2,
+                        default=0,
+                        validators=[DataRequired(), NumberRange(min=0)],
+                        render_kw={
+                            "class": 'input-sm',
+                            "type": 'number',
+                            "step": '0.01',
+                        })
+    fee_payment = RadioField('fee_payment',
+                             choices=[(1, 'pre-paid'), (2, 'post-paid')],
+                             validators=[DataRequired()],
+                             coerce=int,
+                             default=1,
+                             )
+
+    rate_per_month = DecimalField(label='Rate/Month',
+                                  places=2,
+                                  default=0,
+                                  validators=[DataRequired(), NumberRange(min=0)],
+                                  render_kw={
+                                      "class": 'input-sm',
+                                      "type": "number",
+                                      "step": "0.01",
+                                  })
+    available = RadioField('available',
+                           choices=[(0, 'No'), (1, 'Yes')],
+                           coerce=int,
+                           default=0,
+                           )
+    submit = SubmitField('Submit',
+                         render_kw={
+                             'class': 'btn btn-info'
+                         })
 
 
 class MemberSearchForm(CustomForm):

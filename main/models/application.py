@@ -5,24 +5,12 @@ from datetime import datetime
 class Application(db.Model):
     __tablename__ = 'application'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
-    term = db.Column(db.Integer, nullable=False)
-    apr = db.Column(db.Float, nullable=False)
-    method = db.Column(db.String(1), default='A', nullable=False)
     status = db.Column(db.Integer, default=0, nullable=False)
     updated_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     created_time = db.Column(db.DateTime, default=datetime.now)
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False, index=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False, index=True)
     repayment = db.relationship('Repayment', backref="application", lazy='dynamic')
-
-    @property
-    def method_text(self):
-        if self.method == 'A':
-            return 'Equal Amortization'
-        elif self.method == 'B':
-            return 'Equal Principal Payment'
-        else:
-            return 'Unknown'
 
     @property
     def status_text(self):

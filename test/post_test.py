@@ -84,8 +84,23 @@ def test_loan_policy():
     return r.json()
 
 
+def test_loan_products_list(auth_info):
+    url = "http://127.0.0.1:5000/api/v1/loan/products_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    #r = requests.post(url, data=params,)
+    r = requests.get(url)
+    r.encoding = 'utf-8'
+    return r.json()
+
+
 def test_installments():
     url = "http://127.0.0.1:5000/api/v1/loan/installment_detail?amount=10000&term=6&apr=5.3&method=A"
+    r = requests.get(url)
+    r.encoding = 'utf-8'
+    return r.json()
+
+
+def test_installments_new(auth_info, product_id):
+    url = "http://127.0.0.1:5000/api/v1/loan/product_installments?uid={}&token={}&product_id={}".format(auth_info['uid'], auth_info['token'], product_id)
     r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
@@ -137,11 +152,13 @@ if __name__ == '__main__':
         'number': '9191372910211'
     }
 
+
     application_info = {
-        'amount': 10000,
-        'term': 6,
-        'apr': 5.5,
-        'method': 'A'
+        # 'amount': 10000,
+        # 'term': 6,
+        # 'apr': 5.5,
+        # 'method': 'A'
+        'product_id': 9
     }
     #user_token = test_member_register(user_info)
     user_token = test_member_login(user_info['national_id'], user_info['password'])
@@ -152,17 +169,28 @@ if __name__ == '__main__':
     #pprint(resp_data)
     #resp_data = test_user_debit(user_token['data'], debit_info)
     #pprint(resp_data)
-    #resp_data = test_user_apply(user_token['data'], application_info)
-    #pprint(resp_data)
-    #resp_data = test_user_applications_get(user_token['data'])
-    #pprint(resp_data)
-    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=2)
-    pprint(resp_data)
-    #resp_data = test_repayment(user_token['data'], application_id=2, sequence=2)
-    #pprint(resp_data)
-    resp_data = test_repayment_list(user_token['data'])
-    pprint(resp_data)
     #resp_data = test_loan_policy()
     #pprint(resp_data)
     #resp_data = test_installments()
     #pprint(resp_data)
+
+
+
+    #resp_data = test_loan_products_list(user_token['data'])
+    #pprint(resp_data)
+    #for product in resp_data['data']['products']:
+    #    resp_data = test_installments_new(user_token['data'], product['id'])
+    #    pprint(resp_data)
+
+    #resp_data = test_user_apply(user_token['data'], application_info)
+    #pprint(resp_data)
+    #resp_data = test_user_applications_get(user_token['data'])
+    #pprint(resp_data)
+    #for application in resp_data['data']['applications']:
+    #    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=application['id'])
+    #    pprint(resp_data)
+
+    #resp_data = test_repayment(user_token['data'], application_id=3, sequence=1)
+    #pprint(resp_data)
+    resp_data = test_repayment_list(user_token['data'])
+    pprint(resp_data)

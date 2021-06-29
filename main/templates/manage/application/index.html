@@ -2,7 +2,7 @@
 {% from "manage/_macros.html" import render_pagination %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block title %}申请管理{% endblock %}
+{% block title %}{{ _fsdomain('Applications') }}{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ makeup_static_url('plugins/datepicker/bootstrap-datepicker.min.css') }}">
 {% endblock %}
@@ -33,21 +33,22 @@
                 <th>{{ _fsdomain('National/Resident ID') }}</th>
                 <th>{{ _fsdomain('Mobile') }}</th>
                 <th>{{ _fsdomain('Amount') }}</th>
-                <th>{{ _fsdomain('Term') }}</th>
-                <th>{{ _fsdomain('Apr') }}</th>
-                <!--<th>{{ _fsdomain('Repayment Method') }}</th>-->
-                <th>{{ _fsdomain('Founded At') }}</th>
+                <th>{{ _fsdomain('Terms') }}</th>
+                <th>{{ _fsdomain('Rate/Month') }}</th>
+                <th>{{ _fsdomain('Fees') }}</th>
+                <th>{{ _fsdomain('Founded') }}</th>
                 <th>{{ _fsdomain('Last Updated') }}</th>
                 <th>{{ _fsdomain('Stauts') }}</th>
-                <th>{{ _fsdomain('Operate') }}</th>
+                <th>{{ _fsdomain('Action') }}</th>
             </tr>
             {% for item in list.items %}
             <tr>
                 <td>{{ item.member.national_id }}</td>
                 <td>{{ item.member.mobile }}</td>
-                <td>{{ item.amount }}</td>
-                <td>{{ item.term }}</td>
-                <td>{{ item.apr }}%</td>
+                <td>{{ item.product.amount }}</td>
+                <td>{{ item.product.terms }}</td>
+                <td>{{ item.product.rate_per_month }}%</td>
+                <td>{{ item.product.fees }} ({{ item.product.fee_payment_text }})</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 <td>{{ item.updated_time.strftime('%Y-%m-%d %H:%M') }}</td>
                 {% if item.status == 1 %}

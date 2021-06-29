@@ -27,6 +27,7 @@ xlwt
 webassets
 sympy
 flask-bootstrap
+wtforms
 # pymongo==3.5.1
 # Flask-MongoEngine>=0.9.5
 # flask-login==0.3.2
