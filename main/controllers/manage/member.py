@@ -19,7 +19,6 @@ member_bp = Blueprint('manage_member', __name__,)
 def list_member(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = MemberSearchForm()
-    Log.info(len(form.national_id.data))
     if request.method == 'POST':
         if form.national_id.data and len(form.national_id.data) > 0:
             members = Member.query.filter_by(national_id=form.national_id.data).paginate(page=page, per_page=list_per_page)
