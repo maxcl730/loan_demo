@@ -25,11 +25,11 @@ def list_application(page=1):
     if request.method == 'POST':
         Log.info(form.status.data)
         if form.status.data == 100:
-            applications = Application.query.paginate(page=page, per_page=list_per_page)
+            applications = Application.query.order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
         else:
-            applications = Application.query.filter_by(status=form.status.data).paginate(page=page, per_page=list_per_page)
+            applications = Application.query.filter_by(status=form.status.data).order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
     else:
-        applications = Application.query.paginate(page=page, per_page=list_per_page)
+        applications = Application.query.order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
 
     response_data = {
         'list': applications,
@@ -45,7 +45,7 @@ def list_application(page=1):
 @application_bp.route("/filter_application/<int:product_id>", methods=['GET'])
 @login_required
 def filter_application(product_id=0):
-    applications = Application.query.filter_by(product_id=product_id).paginate()
+    applications = Application.query.filter_by(product_id=product_id).order_by(Application.updated_time.desc()).paginate()
     response_data = {
         'list': applications,
         'product_id': product_id,
