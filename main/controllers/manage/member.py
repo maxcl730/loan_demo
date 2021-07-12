@@ -19,15 +19,18 @@ member_bp = Blueprint('manage_member', __name__,)
 def list_member(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = MemberSearchForm()
+    members = Member.query
     if request.method == 'POST':
-        if form.national_id.data and len(form.national_id.data) > 0:
-            members = Member.query.filter_by(national_id=form.national_id.data).paginate(page=page, per_page=list_per_page)
-        elif form.mobile.data and len(form.mobile.data) > 0:
-            members = Member.query.filter_by(mobile=form.mobile.data).paginate(page=page, per_page=list_per_page)
-        else:
-            members = Member.query.paginate(page=page, per_page=list_per_page)
-    else:
-        members = Member.query.paginate(page=page, per_page=list_per_page)
+        if form.national_id.data:
+            members = members.filter_by(national_id=form.national_id.data)
+        if form.mobile.data:
+            members = members.filter_by(mobile=form.mobile.data)
+        if form.created_time_begin.data:
+            members = members.filter(Member.created_time >= form.created_time_begin.data)
+        if form.created_time_end.data:
+            members = members.filter(Member.created_time <= form.created_time_end.data)
+
+    members = members.paginate(page=page, per_page=list_per_page)
 
     count_list = dict()
     for member in members.items:

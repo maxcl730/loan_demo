@@ -22,17 +22,21 @@ application_bp = Blueprint('manage_application', __name__,)
 def list_application(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = ApplicationSearchForm()
-    applications = Application.query.order_by(Application.updated_time.desc())
+    applications = Application.query.join(Member)
     if request.method == 'POST':
-        # Log.info(form.status.data)
-
         if form.national_id.data:
             applications = applications.filter(Member.national_id == form.national_id.data)
         if form.mobile.data:
             applications = applications.filter(Member.mobile == form.mobile.data)
 
+        if form.created_time_begin.data:
+            applications = applications.filter(Application.created_time >= form.created_time_begin.data)
+        if form.created_time_end.data:
+            applications = applications.filter(Application.created_time <= form.created_time_end.data)
         if form.status.data != 100:
-            applications = applications.filter_by(status=form.status.data).order_by(Application.updated_time.desc())
+            applications = applications.filter(Application.status == form.status.data).order_by(Application.updated_time.desc())
+        else:
+            applications = applications.order_by(Application.updated_time.desc())
 
     applications_paged = applications.paginate(page=page, per_page=list_per_page)
     response_data = {

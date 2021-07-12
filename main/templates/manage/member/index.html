@@ -20,8 +20,8 @@
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             <div class="form-group">
-                <label class="label-sm">{{ form.mobile.label.text }}</label> {{ form.mobile }} &nbsp;&nbsp;
                 <label class="label-sm">{{ form.national_id.label.text }}</label> {{ form.national_id }} &nbsp;&nbsp;</br>
+                <label class="label-sm">{{ form.mobile.label.text }}</label> {{ form.mobile }} &nbsp;&nbsp;
                 <label class="label-sm">{{ form.created_time_begin.label.text }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
                 <label class="label-sm">{{ form.created_time_end.label.text }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
                 <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>

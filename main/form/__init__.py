@@ -163,26 +163,27 @@ class ApplicationSearchForm(CustomForm):
                           "class": 'input-sm',
                           "style": '"width: 90px"'
                         })
-    created_time_begin = DateTimeField('开始时间',
+
+    created_time_begin = DateTimeField('Created at (from)',
                                        validators=[DateRange(
-                                           min=datetime(2019, 1, 1),
-                                           max=datetime(2029, 12, 12)
+                                            min=datetime(2019, 1, 1),
+                                            max=datetime(2029, 12, 12)
                                        )],
                                        format='%Y-%m-%d',
                                        render_kw={
-                                           "placeholder": "Begin",
+                                           "placeholder": "begin",
                                            "class": "input-sm",
                                            "type": "input",
                                            "autocomplete": "off",
                                        })
-    created_time_end = DateTimeField('结束时间',
+    created_time_end = DateTimeField('to',
                                      validators=[DateRange(
-                                         min=datetime(2019, 1, 1),
-                                         max=datetime(2029, 12, 12)
+                                           min=datetime(2019, 1, 1),
+                                           max=datetime(2029, 12, 12)
                                      )],
                                      format='%Y-%m-%d',
                                      render_kw={
-                                         "placeholder": "End",
+                                         "placeholder": "end",
                                          "class": "input-sm",
                                          "type": "input",
                                          "autocomplete": "off",

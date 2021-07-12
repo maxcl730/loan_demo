@@ -23,8 +23,10 @@
                 <label class="label-sm">{{ _fsdomain('National/Resident ID') }}</label> {{ form.national_id }} &nbsp;&nbsp;
                 <label class="label-sm">{{ _fsdomain('Mobile') }}</label> {{ form.mobile }} &nbsp;&nbsp;
                 <label class="label-sm">{{ _fsdomain('Status') }}</label>{{ form.status }} <br>
-                <label class="label-sm">{{ _fsdomain('Founded At') }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
-                <label class="label-sm">{{ _fsdomain('Last Updated') }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
+
+                <label class="label-sm">{{ form.created_time_begin.label.text }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
+                <label class="label-sm">{{ form.created_time_end.label.text }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
+
                 <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>
         </form>
     </div>
