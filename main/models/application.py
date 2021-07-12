@@ -12,6 +12,10 @@ class Application(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False, index=True)
     repayment = db.relationship('Repayment', backref="application", lazy='dynamic')
 
+    __mapper_args__ = {
+        "order_by": created_time.desc()
+    }
+
     @property
     def status_text(self):
         if self.status == 0:

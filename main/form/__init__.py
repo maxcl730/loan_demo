@@ -90,7 +90,7 @@ class MemberSearchForm(CustomForm):
                          render_kw={
                              "class": 'input-sm'
                          })
-    nickname = StringField('Nickname',
+    national_id = StringField('National ID',
                            render_kw={
                                "class": 'input-sm'
                            })

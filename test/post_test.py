@@ -4,9 +4,12 @@ import sys
 import os.path as op
 from pprint import pprint
 
+ROOT_PATH = 'http://127.0.0.1:5000'
+ROOT_PATH = 'https://loan.52fisher.com'
+
 
 def test_member_login(national_id, password):
-    url = "http://127.0.0.1:5000/api/v1/member/login"
+    url = ROOT_PATH + "/api/v1/member/login"
     params = {
         'national_id': national_id,
         'password': password,
@@ -19,7 +22,7 @@ def test_member_login(national_id, password):
 
 
 def test_member_register(user_info):
-    url = "http://127.0.0.1:5000/api/v1/member/register"
+    url = ROOT_PATH + "/api/v1/member/register"
     # print(url)
     # headers = {"Content-Type": "application/text"}
     r = requests.post(url, data=user_info,)
@@ -28,7 +31,7 @@ def test_member_register(user_info):
 
 
 def test_user_auth(auth_info):
-    url = "http://127.0.0.1:5000/api/v1/member/auth?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/member/auth?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     # headers = {"Content-Type": "application/text"}
     #r = requests.post(url, data=params,)
     r = requests.get(url)
@@ -37,7 +40,7 @@ def test_user_auth(auth_info):
 
 
 def test_user_info(auth_info):
-    url = "http://127.0.0.1:5000/api/v1/member/info?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/member/info?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     #r = requests.post(url, data=params,)
     r = requests.get(url)
     r.encoding = 'utf-8'
@@ -45,7 +48,7 @@ def test_user_info(auth_info):
 
 
 def test_user_debit(auth_info, debit_info):
-    url = "http://127.0.0.1:5000/api/v1/member/debit?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/member/debit?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     #r = requests.post(url, data=params,)
     r = requests.post(url, data=debit_info,)
     r.encoding = 'utf-8'
@@ -53,7 +56,7 @@ def test_user_debit(auth_info, debit_info):
 
 
 def test_user_apply(auth_info, application_info):
-    url = "http://127.0.0.1:5000/api/v1/loan/application?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/loan/application?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     #r = requests.post(url, data=params,)
     r = requests.post(url, data=application_info,)
     r.encoding = 'utf-8'
@@ -61,7 +64,7 @@ def test_user_apply(auth_info, application_info):
 
 
 def test_user_applications_get(auth_info):
-    url = "http://127.0.0.1:5000/api/v1/loan/application?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/loan/application?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     #r = requests.post(url, data=params,)
     r = requests.get(url)
     r.encoding = 'utf-8'
@@ -69,7 +72,7 @@ def test_user_applications_get(auth_info):
 
 
 def test_user_applications_get_by_id(auth_info, application_id):
-    url = "http://127.0.0.1:5000/api/v1/loan/application?uid={}&token={}&application_id={}".format(auth_info['uid'], auth_info['token'], application_id)
+    url = ROOT_PATH + "/api/v1/loan/application?uid={}&token={}&application_id={}".format(auth_info['uid'], auth_info['token'], application_id)
     #r = requests.post(url, data=params,)
     r = requests.get(url)
     r.encoding = 'utf-8'
@@ -77,7 +80,7 @@ def test_user_applications_get_by_id(auth_info, application_id):
 
 
 def test_loan_policy():
-    url = "http://127.0.0.1:5000/api/v1/loan/policy"
+    url = ROOT_PATH + "/api/v1/loan/policy"
     #r = requests.post(url, data=params,)
     r = requests.get(url)
     r.encoding = 'utf-8'
@@ -85,7 +88,7 @@ def test_loan_policy():
 
 
 def test_loan_products_list(auth_info):
-    url = "http://127.0.0.1:5000/api/v1/loan/products_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/loan/products_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     #r = requests.post(url, data=params,)
     r = requests.get(url)
     r.encoding = 'utf-8'
@@ -93,21 +96,21 @@ def test_loan_products_list(auth_info):
 
 
 def test_installments():
-    url = "http://127.0.0.1:5000/api/v1/loan/installment_detail?amount=10000&term=6&apr=5.3&method=A"
+    url = ROOT_PATH + "/api/v1/loan/installment_detail?amount=10000&term=6&apr=5.3&method=A"
     r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
 
 
 def test_installments_new(auth_info, product_id):
-    url = "http://127.0.0.1:5000/api/v1/loan/product_installments?uid={}&token={}&product_id={}".format(auth_info['uid'], auth_info['token'], product_id)
+    url = ROOT_PATH + "/api/v1/loan/product_installments?uid={}&token={}&product_id={}".format(auth_info['uid'], auth_info['token'], product_id)
     r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
 
 
 def test_repayment(auth_info, application_id, sequence):
-    url = "http://127.0.0.1:5000/api/v1/loan/repayment?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/loan/repayment?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     params = {
         'application_id': application_id,
         'sequence': sequence,
@@ -118,7 +121,7 @@ def test_repayment(auth_info, application_id, sequence):
 
 
 def test_repayment_list(auth_info):
-    url = "http://127.0.0.1:5000/api/v1/loan/repayment_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
+    url = ROOT_PATH + "/api/v1/loan/repayment_list?uid={}&token={}".format(auth_info['uid'], auth_info['token'])
     r = requests.get(url)
     r.encoding = 'utf-8'
     return r.json()
@@ -126,7 +129,7 @@ def test_repayment_list(auth_info):
 
 def post_image(filename=''):
     # url = 'http://127.0.0.1:5000/api/v1/upload'
-    url = 'http://127.0.0.1:5000/manage/summernote'
+    url = ROOT_PATH + "/manage/summernote"
     (filepath, tempfilename) = op.split(filename);
     if len(tempfilename) > 1:
         files = {
@@ -141,12 +144,21 @@ if __name__ == '__main__':
     #post_image(fn)
 
     user_info = {
+        'national_id': '123456',
+        'password': '123456',
+        'mobile': '13911155577',
+        'language': 'zh_CN',
+        'birthday': '11/01/1999',
+    }
+    """
+    user_info = {
         'national_id': '20210522',
         'password': 'helloworld',
         'mobile': '13911155577',
         'language': 'zh_CN',
         'birthday': '11/01/1999',
     }
+    """
     debit_info = {
         'name': 'James1 Hardan',
         'number': '9191372910211'
@@ -161,10 +173,10 @@ if __name__ == '__main__':
         'product_id': 9
     }
     #user_token = test_member_register(user_info)
-    user_token = test_member_login(user_info['national_id'], user_info['password'])
-    pprint(user_token)
-    user_token = test_user_auth(user_token['data'])
-    pprint(user_token)
+    #user_token = test_member_login(user_info['national_id'], user_info['password'])
+    #pprint(user_token)
+    #user_token = test_user_auth(user_token['data'])
+    #pprint(user_token)
     #resp_data = test_user_info(user_token['data'])
     #pprint(resp_data)
     #resp_data = test_user_debit(user_token['data'], debit_info)
@@ -192,5 +204,12 @@ if __name__ == '__main__':
 
     #resp_data = test_repayment(user_token['data'], application_id=3, sequence=1)
     #pprint(resp_data)
+    user_token = {
+        'code': 0,
+        'data': {
+            'token': 'dba0c87473f2e7461d5b702ff6f25f3e',
+            'uid': 2,
+        }
+    }
     resp_data = test_repayment_list(user_token['data'])
     pprint(resp_data)
