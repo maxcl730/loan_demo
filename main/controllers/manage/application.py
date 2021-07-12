@@ -3,7 +3,7 @@ import sys
 from flask import current_app, Blueprint, request, url_for, jsonify, flash, redirect
 from flask_security import login_required
 from common.helper import ops_render
-# from main.models.member import Member
+from main.models.member import Member
 from database import db
 from main.models.application import Application
 from main.models.loan import Repayment
@@ -22,17 +22,21 @@ application_bp = Blueprint('manage_application', __name__,)
 def list_application(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = ApplicationSearchForm()
+    applications = Application.query.order_by(Application.updated_time.desc())
     if request.method == 'POST':
-        Log.info(form.status.data)
-        if form.status.data == 100:
-            applications = Application.query.order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
-        else:
-            applications = Application.query.filter_by(status=form.status.data).order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
-    else:
-        applications = Application.query.order_by(Application.updated_time.desc()).paginate(page=page, per_page=list_per_page)
+        # Log.info(form.status.data)
 
+        if form.national_id.data:
+            applications = applications.filter(Member.national_id == form.national_id.data)
+        if form.mobile.data:
+            applications = applications.filter(Member.mobile == form.mobile.data)
+
+        if form.status.data != 100:
+            applications = applications.filter_by(status=form.status.data).order_by(Application.updated_time.desc())
+
+    applications_paged = applications.paginate(page=page, per_page=list_per_page)
     response_data = {
-        'list': applications,
+        'list': applications_paged,
         'form': form,
         'product_id': 0,
         # 'count_list': count_list,

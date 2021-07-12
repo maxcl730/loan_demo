@@ -79,6 +79,7 @@ class ProductForm(CustomForm):
 
 
 class MemberSearchForm(CustomForm):
+    """
     status = SelectField(label='Status',
                          coerce=int,
                          choices=STATUS,
@@ -86,6 +87,7 @@ class MemberSearchForm(CustomForm):
                              "class": 'input-sm',
                              "style": '"width: 90px"'
                          })
+    """
     mobile = StringField('Mobile',
                          render_kw={
                              "class": 'input-sm'
