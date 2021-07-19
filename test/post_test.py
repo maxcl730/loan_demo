@@ -144,11 +144,11 @@ if __name__ == '__main__':
     #post_image(fn)
 
     user_info = {
-        'national_id': '123456',
-        'password': '123456',
-        'mobile': '13911155577',
-        'language': 'zh_CN',
-        'birthday': '11/01/1999',
+        'national_id': '2222222222',
+        'password': '222222222',
+        #'mobile': '13911155577',
+        #'language': 'zh_CN',
+        #'birthday': '11/01/1999',
     }
     """
     user_info = {
@@ -213,5 +213,5 @@ if __name__ == '__main__':
         }
     }
     """
-    resp_data = test_repayment_list(user_token['data'])
-    pprint(resp_data)
+    #resp_data = test_repayment_list(user_token['data'])
+    #pprint(resp_data)

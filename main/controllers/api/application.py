@@ -70,7 +70,7 @@ class LoanApplicationApi(Resource):
                     'amount': ProductValue(attribute='product.amount'),
                     'terms': ProductValue(attribute='product.terms'),
                     'fees': ProductValue(attribute='product.fees'),
-                    'fee_payment':ProductValue(attribute='product.fee_payment_text'),
+                    'fee_payment': ProductValue(attribute='product.fee_payment_text'),
                     'rate_per_month': ProductValue(attribute='product.rate_per_month'),
                     'status': fields.Integer,
                     'status_text': fields.String,
@@ -78,8 +78,7 @@ class LoanApplicationApi(Resource):
                     'updated_time': TimestampValue(attribute='updated_time')
                 })),
             }
-            # applications = member.applications.all().order_by(Application.updated_time.desc())
-            applications = db.session.query(Application).order_by(Application.updated_time.desc()).all()
+            applications = member.applications.order_by(Application.updated_time.desc()).all()
             data = {
                 'applications': applications,
                 'applications_count': len(applications),
