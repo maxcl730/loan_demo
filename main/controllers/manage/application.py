@@ -22,7 +22,8 @@ application_bp = Blueprint('manage_application', __name__,)
 def list_application(page=1):
     list_per_page = current_app.config['MANAGEMENT_LIST_PER_PAGE']
     form = ApplicationSearchForm()
-    applications = Application.query.join(Member)
+    applications = Application.query.join(Member).order_by(Application.updated_time.desc())
+    Log.info(page)
     if request.method == 'POST':
         if form.national_id.data:
             applications = applications.filter(Member.national_id == form.national_id.data)
@@ -46,7 +47,7 @@ def list_application(page=1):
         # 'count_list': count_list,
         'filter': sys._getframe().f_code.co_name,
     }
-
+    Log.info(response_data)
     return ops_render('manage/application/index.html', response_data)
 
 

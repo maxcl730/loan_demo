@@ -5,7 +5,7 @@ import os.path as op
 from pprint import pprint
 
 ROOT_PATH = 'http://127.0.0.1:5000'
-#ROOT_PATH = 'https://loan.52fisher.com'
+ROOT_PATH = 'https://loan.52fisher.com'
 
 
 def test_member_login(national_id, password):
@@ -144,8 +144,8 @@ if __name__ == '__main__':
     #post_image(fn)
 
     user_info = {
-        'national_id': '2222222222',
-        'password': '222222222',
+        'national_id': '1081383117',
+        'password': '123456',
         #'mobile': '13911155577',
         #'language': 'zh_CN',
         #'birthday': '11/01/1999',
