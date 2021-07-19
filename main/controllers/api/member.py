@@ -59,7 +59,7 @@ class MemberLoginApi(Resource):
         }
         # 用户验证（返回uid、signature)
         args = member_login_parser.parse_args()
-        member = Member.query.filter_by(national_id=args['national_id']).first()
+        member = Member.query.filter_by(national_id=args['national_id'], password=args['password']).first()
         if member:
             member.salt = member.gene_Salt
             db.session.add(member)
@@ -68,7 +68,7 @@ class MemberLoginApi(Resource):
             token = member.gene_Token
             return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
         else:
-            return Http.gen_failure_response(code=-1, message='Member does not exist.')
+            return Http.gen_failure_response(code=-1, message='Member does not exist or password is incorrect.')
 
         #if member.status == 2:
             # 会员已被禁用
@@ -173,13 +173,8 @@ class MemberRegisterApi(Resource):
         #try:
         member = Member.query.filter_by(national_id=args['national_id']).first()
         if member:
-            member.mobile = args['mobile']
-            member.password = args['password']
-            member.language = args.get('language', '')
-            member.birthday = args.get('birthday', '')
-            member.nickname = args.get('nickname', '')
-            member.sex = args.get('sex', '')
-            db.session.add(member)
+            # 返回用户已存在
+            return Http.gen_failure_response(code=2, message="National/Resident id has been registered.")
         else:
             new_member = Member(
                 national_id=args['national_id'],
