@@ -255,7 +255,7 @@ class RepaymentListApi(Resource):
                         Repayment.fee,
                         Application.created_time,).join(Application,
                         Repayment.application_id == Application.id).filter(Application.member_id == member.id,
-                                                                           Repayment.paid_status == 1).all()
+                                                                           Repayment.paid_status == 1).order_by(Repayment.updated_time.desc()).all()
         data = list()
         for rep in repayments:
             # Log.info(rep.keys())

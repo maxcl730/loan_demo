@@ -78,7 +78,8 @@ class LoanApplicationApi(Resource):
                     'updated_time': TimestampValue(attribute='updated_time')
                 })),
             }
-            applications = member.applications.all()
+            # applications = member.applications.all().order_by(Application.updated_time.desc())
+            applications = db.session.query(Application).order_by(Application.updated_time.desc()).all()
             data = {
                 'applications': applications,
                 'applications_count': len(applications),

@@ -5,7 +5,7 @@ import os.path as op
 from pprint import pprint
 
 ROOT_PATH = 'http://127.0.0.1:5000'
-ROOT_PATH = 'https://loan.52fisher.com'
+#ROOT_PATH = 'https://loan.52fisher.com'
 
 
 def test_member_login(national_id, password):
@@ -173,8 +173,8 @@ if __name__ == '__main__':
         'product_id': 9
     }
     #user_token = test_member_register(user_info)
-    #user_token = test_member_login(user_info['national_id'], user_info['password'])
-    #pprint(user_token)
+    user_token = test_member_login(user_info['national_id'], user_info['password'])
+    pprint(user_token)
     #user_token = test_user_auth(user_token['data'])
     #pprint(user_token)
     #resp_data = test_user_info(user_token['data'])
@@ -196,14 +196,15 @@ if __name__ == '__main__':
 
     #resp_data = test_user_apply(user_token['data'], application_info)
     #pprint(resp_data)
-    #resp_data = test_user_applications_get(user_token['data'])
-    #pprint(resp_data)
+    resp_data = test_user_applications_get(user_token['data'])
+    pprint(resp_data)
     #for application in resp_data['data']['applications']:
     #    resp_data = test_user_applications_get_by_id(user_token['data'], application_id=application['id'])
     #    pprint(resp_data)
 
     #resp_data = test_repayment(user_token['data'], application_id=3, sequence=1)
     #pprint(resp_data)
+    """
     user_token = {
         'code': 0,
         'data': {
@@ -211,5 +212,6 @@ if __name__ == '__main__':
             'uid': 2,
         }
     }
+    """
     resp_data = test_repayment_list(user_token['data'])
     pprint(resp_data)
