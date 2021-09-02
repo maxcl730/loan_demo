@@ -87,7 +87,7 @@ class ProductionConfig(Config):
     DEBUG = True
 
     SQLALCHEMY_ECHO = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:t69i5wz87a@172.22.0.16/loan?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:T69i5wz87a@loan@loandb-host/loan?charset=utf8mb4'
     #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://logan:chengliang@192.168.0.70/logan_test?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENCODING = "utf8mb4"
