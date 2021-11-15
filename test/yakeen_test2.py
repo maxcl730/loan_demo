@@ -49,7 +49,7 @@ citizenAddressInfoRequest.nin = nin  # '1101193801'
 citizenAddressInfoRequest.password = 'Gccpay@39077'
 citizenAddressInfoRequest.userName = 'Gccpay_PILOT_USR'
 citizenAddressInfoRequest.referenceNumber = 'loan'
-citizenAddressInfoRequest.addressLanguage = 'A'
+citizenAddressInfoRequest.addressLanguage = 'E'
 
 rs_CitizenAddressInfo = yk_client.service.getCitizenAddressInfo(citizenAddressInfoRequest)
 #print(rs_CitizenAddressInfo)
@@ -91,7 +91,7 @@ getAlienAddressInfoRequest.iqamaNumber = iqamaNumber  # '1101193801'
 getAlienAddressInfoRequest.password = 'Gccpay@39077'
 getAlienAddressInfoRequest.userName = 'Gccpay_PILOT_USR'
 getAlienAddressInfoRequest.referenceNumber = 'loan'
-getAlienAddressInfoRequest.addressLanguage = 'A'
+getAlienAddressInfoRequest.addressLanguage = 'E'
 
 rs_AlienAddressInfo = yk_client.service.getAlienAddressInfo(getAlienAddressInfoRequest)
 user_info = dict()
