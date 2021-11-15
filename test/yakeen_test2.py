@@ -59,6 +59,7 @@ for key in rs_CitizenAddressInfo.__keylist__:
     user_address_info[key] = rs_CitizenAddressInfo[key]
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
+            user_address_info[type(v).__name__] = list()
             user_address_detail = dict()
             if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                 user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
@@ -106,6 +107,7 @@ for key in rs_AlienAddressInfo.__keylist__:
     user_address_info[key] = rs_AlienAddressInfo[key]
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
+            user_address_info[type(v).__name__] = list()
             user_address_detail = dict()
             if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                 user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
