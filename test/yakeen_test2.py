@@ -59,7 +59,7 @@ for key in rs_CitizenAddressInfo.__keylist__:
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
             print(type(v))
-            pprint(v)
+            pprint(dir(v))
 
 print("#"*200)
 #print(rs_CitizenAddressInfo)
@@ -104,7 +104,7 @@ for key in rs_AlienAddressInfo.__keylist__:
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
             print(type(v))
-            pprint(v)
+            pprint(dir(v))
 print("#"*200)
 #print(rs_AlienAddressInfo)
 #print(json.dumps(user_address_info))
