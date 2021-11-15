@@ -1,1 +1,0 @@
-{"amount": {"min": 300, "max": 30000, "step": 100}, "term": [3, 6, 12, 24, 36], "apr": [35, 32, 26, 18, 10], "method": {"A": "Equal_Amortization"}}

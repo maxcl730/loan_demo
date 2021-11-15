@@ -9,7 +9,7 @@ class Config(object):
 
     INVITATION_CODE_TTL = 86400
     APP = {
-        'domain': 'https://loan.52fisher.com/',
+        'domain': 'https://manage.salaf.sa/',
     }
     MANAGEMENT_LIST_PER_PAGE = 20
     FRONTEND_LIST_PER_PAGE = 10
