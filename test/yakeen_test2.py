@@ -54,17 +54,19 @@ citizenAddressInfoRequest.addressLanguage = 'E'
 rs_CitizenAddressInfo = yk_client.service.getCitizenAddressInfo(citizenAddressInfoRequest)
 #print(rs_CitizenAddressInfo)
 user_address_info = dict()
+print("#"*200)
 for key in rs_CitizenAddressInfo.__keylist__:
     user_address_info[key] = rs_CitizenAddressInfo[key]
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
-            print(type(v))
-            pprint(dir(v))
-
-print("#"*200)
+            user_address_detail = dict()
+            if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
+                user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
+                user_address_detail['class'] = type(v).__name__
+            pprint(user_address_detail)
 #print(rs_CitizenAddressInfo)
 #print(json.dumps(user_address_info))
-print(user_address_info)
+#print(user_address_info)
 print("#"*200)
 
 getAlienInfoByIqamaRequest = yk_client.factory.create("alienInfoByIqamaRequest")
@@ -99,19 +101,16 @@ getAlienAddressInfoRequest.addressLanguage = 'E'
 
 rs_AlienAddressInfo = yk_client.service.getAlienAddressInfo(getAlienAddressInfoRequest)
 user_address_info = dict()
+print("#"*200)
 for key in rs_AlienAddressInfo.__keylist__:
     user_address_info[key] = rs_AlienAddressInfo[key]
     if isinstance(user_address_info[key], list):
         for v in user_address_info[key]:
-            print(type(v))
-            print("#" * 100)
-            pprint(v.__dict__)
-            print("#" * 100)
-            pprint(v.__keylist__)
-            print("#" * 100)
-            pprint(v.__str__)
-print("#"*200)
-#print(rs_AlienAddressInfo)
+            user_address_detail = dict()
+            if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
+                user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
+                user_address_detail['class'] = type(v).__name__
+            pprint(user_address_detail)
 #print(json.dumps(user_address_info))
-print(user_address_info)
+#print(user_address_info)
 print("#"*200)
