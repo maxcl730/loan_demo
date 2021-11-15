@@ -56,6 +56,8 @@ rs_CitizenAddressInfo = yk_client.service.getCitizenAddressInfo(citizenAddressIn
 user_address_info = dict()
 for key in rs_CitizenAddressInfo.__keylist__:
     user_address_info[key] = rs_CitizenAddressInfo[key]
+    print(type(user_address_info[key]))
+    pprint(user_address_info[key])
 
 print("#"*200)
 #print(rs_CitizenAddressInfo)
@@ -97,6 +99,8 @@ rs_AlienAddressInfo = yk_client.service.getAlienAddressInfo(getAlienAddressInfoR
 user_info = dict()
 for key in rs_AlienAddressInfo.__keylist__:
     user_info[key] = rs_AlienAddressInfo[key]
+    print(type(user_info[key]))
+    pprint(user_info[key])
 print("#"*200)
 #print(rs_AlienAddressInfo)
 #print(json.dumps(user_info))
