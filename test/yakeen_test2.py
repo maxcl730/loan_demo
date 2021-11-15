@@ -14,6 +14,7 @@ sap_url = "https://yakeen-piloting.eserve.com.sa/Yakeen4Gccpay/Yakeen4Gccpay?wsd
 
 myheaders = dict(username='Gccpay_PILOT_USR', password='Gccpay@39077')
 yk_client = Client(sap_url)
+yk_client.set_options(timeout=20)
 #yk_client.set_options(soapheaders=myheaders)
 #print(yk_client)
 #sys.exit()
