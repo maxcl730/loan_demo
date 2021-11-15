@@ -56,8 +56,10 @@ rs_CitizenAddressInfo = yk_client.service.getCitizenAddressInfo(citizenAddressIn
 user_address_info = dict()
 for key in rs_CitizenAddressInfo.__keylist__:
     user_address_info[key] = rs_CitizenAddressInfo[key]
-    print(type(user_address_info[key]))
-    pprint(user_address_info[key])
+    if isinstance(user_address_info[key], list):
+        for v in user_address_info[key]:
+            print(type(v))
+            pprint(v)
 
 print("#"*200)
 #print(rs_CitizenAddressInfo)
@@ -96,13 +98,15 @@ getAlienAddressInfoRequest.referenceNumber = 'loan'
 getAlienAddressInfoRequest.addressLanguage = 'E'
 
 rs_AlienAddressInfo = yk_client.service.getAlienAddressInfo(getAlienAddressInfoRequest)
-user_info = dict()
+user_address_info = dict()
 for key in rs_AlienAddressInfo.__keylist__:
-    user_info[key] = rs_AlienAddressInfo[key]
-    print(type(user_info[key]))
-    pprint(user_info[key])
+    user_address_info[key] = rs_AlienAddressInfo[key]
+    if isinstance(user_address_info[key], list):
+        for v in user_address_info[key]:
+            print(type(v))
+            pprint(v)
 print("#"*200)
 #print(rs_AlienAddressInfo)
-#print(json.dumps(user_info))
-print(user_info)
+#print(json.dumps(user_address_info))
+print(user_address_info)
 print("#"*200)
