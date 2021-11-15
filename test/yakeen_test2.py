@@ -35,12 +35,12 @@ try:
     user_info.clear()
     for key in rs_CitizenInfo.__keylist__:
         user_info[key] = rs_CitizenInfo[key]
-    print("#" * 200)
+    print("#" * 150)
     # print(user_info)
     print(json.dumps(user_info))
-    print("#" * 200)
+    print("#" * 150)
 except WebFault as e:
-    print(e)
+    print(e.__str__())
 
 citizenAddressInfoRequest = yk_client.factory.create("citizenAddressInfoRequest")
 nin = '1081383117'
@@ -55,7 +55,7 @@ citizenAddressInfoRequest.addressLanguage = 'E'
 try:
     rs_CitizenAddressInfo = yk_client.service.getCitizenAddressInfo(citizenAddressInfoRequest)
     user_address_info.clear()
-    print("#"*200)
+    print("#"*150)
     for key in rs_CitizenAddressInfo.__keylist__:
         if isinstance(rs_CitizenAddressInfo[key], list):
             user_address_detail = list()
@@ -67,7 +67,7 @@ try:
             user_address_info[key] = rs_CitizenAddressInfo[key]
     print(json.dumps(user_address_info))
     # print(user_address_info)
-    print("#"*200)
+    print("#"*150)
 except WebFault as e:
     print(e)
 
@@ -85,10 +85,10 @@ try:
     user_info.clear()
     for key in rs_AlienInfo.__keylist__:
         user_info[key] = rs_AlienInfo[key]
-    print("#"*200)
+    print("#"*150)
     # print(user_info)
     print(json.dumps(user_info))
-    print("#"*200)
+    print("#"*150)
 except WebFault as e:
     print(e)
 
@@ -105,7 +105,7 @@ getAlienAddressInfoRequest.addressLanguage = 'E'
 try:
     rs_AlienAddressInfo = yk_client.service.getAlienAddressInfo(getAlienAddressInfoRequest)
     user_address_info.clear()
-    print("#"*200)
+    print("#"*150)
     for key in rs_AlienAddressInfo.__keylist__:
         if isinstance(rs_AlienAddressInfo[key], list):
             user_address_detail = list()
@@ -114,9 +114,9 @@ try:
                     user_address_detail.append({add_key: v[add_key] for add_key in v.__keylist__})
             user_address_info[type(v).__name__] = user_address_detail
         else:
-            user_address_info[key] = rs_CitizenAddressInfo[key]
+            user_address_info[key] = rs_AlienAddressInfo[key]
     print(json.dumps(user_address_info))
     # print(user_address_info)
-    print("#"*200)
+    print("#"*150)
 except WebFault as e:
     print(e)
