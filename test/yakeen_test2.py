@@ -36,8 +36,8 @@ user_info = dict()
 for key in rs_CitizenInfo.__keylist__:
     user_info[key] = rs_CitizenInfo[key]
 print("#"*200)
-print(user_info)
-#print(json.dumps(user_info))
+#print(user_info)
+print(json.dumps(user_info))
 print("#"*200)
 
 citizenAddressInfoRequest = yk_client.factory.create("citizenAddressInfoRequest")
@@ -62,10 +62,10 @@ for key in rs_CitizenAddressInfo.__keylist__:
             user_address_detail = dict()
             if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                 user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
-                user_address_detail['class'] = type(v).__name__
-            pprint(user_address_detail)
+                #user_address_detail['class'] = type(v).__name__
+                user_address_info[type(v).__name__].append(user_address_detail)
 #print(rs_CitizenAddressInfo)
-#print(json.dumps(user_address_info))
+print(json.dumps(user_address_info))
 #print(user_address_info)
 print("#"*200)
 
@@ -84,8 +84,8 @@ user_info = dict()
 for key in rs_AlienInfo.__keylist__:
     user_info[key] = rs_AlienInfo[key]
 print("#"*200)
-print(user_info)
-#print(json.dumps(user_info))
+#print(user_info)
+print(json.dumps(user_info))
 print("#"*200)
 
 getAlienAddressInfoRequest = yk_client.factory.create("alienAddressInfoRequest")
@@ -109,8 +109,8 @@ for key in rs_AlienAddressInfo.__keylist__:
             user_address_detail = dict()
             if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                 user_address_detail = {add_key: v[add_key] for add_key in v.__keylist__}
-                user_address_detail['class'] = type(v).__name__
-            pprint(user_address_detail)
+                #user_address_detail['class'] = type(v).__name__
+                user_address_info[type(v).__name__].append(user_address_detail)
 #print(json.dumps(user_address_info))
-#print(user_address_info)
+print(json.dumps(user_address_info))
 print("#"*200)
