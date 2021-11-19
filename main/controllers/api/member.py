@@ -9,7 +9,7 @@ from database import db
 from common import Log
 from main.models.member import Member, Debit
 from common.helper.credit import YakeenCredit
-import asyncio
+import json
 
 
 class MemberAvatar(fields.Raw):
@@ -124,12 +124,6 @@ class MemberAuthApi(Resource):
         return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
 
 
-async def hello():
-    await asyncio.sleep(5)
-    Log.info('55555')
-    return 1
-
-
 class MemberRegisterApi(Resource):
     def post(self):
         """
@@ -185,16 +179,14 @@ class MemberRegisterApi(Resource):
         else:
             # 调用征信接口查询用户信息
             credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
-            credit_status = credit.verify_member_info()
-
-            if not credit_status:
+            member_credit_info = credit.verify_member_info()
+            if not member_credit_info:
                 # 用户征信信息异常，返回错误
                 return Http.gen_failure_response(code=2, message="Failed to query credit information.")
 
             # 用户征信信息正常，继续注册
-            credit.verify_member_address()
-            return Http.gen_failure_response(code=2, message="continue...")
-            '''
+            member_address = credit.verify_member_address()
+            # return Http.gen_failure_response(code=2, message="continue...")
             new_member = Member(
                 national_id=args['national_id'],
                 mobile=args['mobile'],
@@ -203,7 +195,9 @@ class MemberRegisterApi(Resource):
                 language=args.get('language', 'en_US'),
                 nickname=args.get('nickname', ''),
                 sex=args.get('sex', 0),
-                reg_ip=request.remote_addr
+                reg_ip=request.remote_addr,
+                credit_info=json.dumps(member_credit_info),
+                credit_info_address=json.dumps(member_address) if member_address else ''
             )
             db.session.add(new_member)
             member = Member.query.filter_by(national_id=args['national_id']).first()
@@ -213,7 +207,6 @@ class MemberRegisterApi(Resource):
             db.session.commit()
             token = member.gene_Token
             return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
-            '''
 
 
 class MemberInfoApi(Resource):
@@ -274,7 +267,6 @@ class MemberInfoApi(Resource):
         member_debit = member.debit.first()
         if member_debit is None:
             member_debit = {'name': None, 'number': None}
-        #if member_debit is None:
 
         return Http.gen_success_response(
             data={

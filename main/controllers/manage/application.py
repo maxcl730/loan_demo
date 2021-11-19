@@ -11,7 +11,6 @@ from main.form import ApplicationSearchForm
 from common.helper.loan import MonthInstallment
 from decimal import Decimal
 from common.date import Date
-from common import Log
 
 application_bp = Blueprint('manage_application', __name__,)
 

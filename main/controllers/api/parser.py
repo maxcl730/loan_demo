@@ -62,7 +62,7 @@ member_register_parser.add_argument(
 member_register_parser.add_argument(
     'mobile',
     type=str,
-    required=False,
+    required=True,
     location=['args', 'form', 'json'],
     # help="<mobile> is required!"
 )

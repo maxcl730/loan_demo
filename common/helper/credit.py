@@ -23,7 +23,6 @@ class YakeenCredit:
 
         self.member_national_id = national_id
         self.member_birthday = birthday.replace('/', '-')[3:]
-        Log.info(self.member_birthday)
 
     def verify_member_info(self):
         # 获取会员信用信息
@@ -33,13 +32,15 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            return self.citizen_info()
+            if self.citizen_info():
+                return self.user_info
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            return self.alien_info()
+            if self.alien_info():
+                return self.user_info
         else:
             # error national_id
             return None
@@ -52,13 +53,15 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            return self.citizen_address()
+            if self.citizen_address():
+                return self.user_address
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            return self.alien_address()
+            if self.alien_address():
+                return self.user_address
         else:
             # error national_id
             return None
