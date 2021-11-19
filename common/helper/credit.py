@@ -80,7 +80,7 @@ class YakeenCredit:
             for key in rs.__keylist__:
                 self.user_info[key] = rs[key]
 
-            Log.info(self.user_info)
+            # Log.info(self.user_info)
             return True
         except WebFault as e:
             Log.warn(e.__str__())
@@ -110,7 +110,7 @@ class YakeenCredit:
                 else:
                     self.user_address[key] = rs[key]
 
-            Log.info(self.user_address)
+            # Log.info(self.user_address)
             return True
         except WebFault as e:
             Log.warn(e.__str__())
@@ -130,7 +130,7 @@ class YakeenCredit:
             for key in rs.__keylist__:
                 self.user_info[key] = rs[key]
 
-            Log.info(self.user_info)
+            # Log.info(self.user_info)
             return True
         except WebFault as e:
             Log.warn(e.__str__())
@@ -160,7 +160,7 @@ class YakeenCredit:
                 else:
                     self.user_address[key] = rs[key]
 
-            Log.info(self.user_address)
+            # Log.info(self.user_address)
             return True
         except WebFault as e:
             Log.warn(e.__str__())
