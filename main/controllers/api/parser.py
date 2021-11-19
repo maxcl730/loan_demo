@@ -76,7 +76,7 @@ member_register_parser.add_argument(
 member_register_parser.add_argument(
     'birthday',
     type=str,
-    required=False,
+    required=True,
     location=['args', 'form', 'json'],
     # help="<password> is required!"
 )

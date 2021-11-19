@@ -73,6 +73,13 @@ class Config(object):
     # Auth token
     AUTH_TOKEN_MAX_AGE = 300
 
+    # Yakeen credit soap url
+    YAKEEN_SOAP_URL = "https://yakeen-piloting.eserve.com.sa/Yakeen4Gccpay/Yakeen4Gccpay?wsdl"
+    YAKEEN_SOAP_USERNAME = 'Gccpay_PILOT_USR'
+    YAKEEN_SOAP_PASSWORD = 'Gccpay@39077'
+    YAKEEN_SOAP_CHARGECODE = 'PILOT'
+    YAKEEN_SOAP_REFERENCENUMBER = 'LOAN'
+
 
 class ProductionConfig(Config):
     """Production config calss."""

@@ -4,8 +4,6 @@ from os import path as op
 from dateutil.relativedelta import relativedelta
 from sympy import solve
 from sympy import abc
-from common import Log
-# from math import ceil
 
 
 class MonthInstallment:

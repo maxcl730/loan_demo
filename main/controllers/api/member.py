@@ -6,8 +6,10 @@ from .parser import member_login_parser, uid_token_parser, member_register_parse
 from common.http import Http
 from common.helper.member import check_token
 from database import db
-from main.models.member import Member, Debit
 from common import Log
+from main.models.member import Member, Debit
+from common.helper.credit import YakeenCredit
+import asyncio
 
 
 class MemberAvatar(fields.Raw):
@@ -122,6 +124,12 @@ class MemberAuthApi(Resource):
         return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
 
 
+async def hello():
+    await asyncio.sleep(5)
+    Log.info('55555')
+    return 1
+
+
 class MemberRegisterApi(Resource):
     def post(self):
         """
@@ -170,12 +178,23 @@ class MemberRegisterApi(Resource):
             'token': fields.String,
         }
         args = member_register_parser.parse_args()
-        #try:
         member = Member.query.filter_by(national_id=args['national_id']).first()
         if member:
             # 返回用户已存在
             return Http.gen_failure_response(code=2, message="National/Resident id has been registered.")
         else:
+            # 调用征信接口查询用户信息
+            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
+            credit_status = credit.verify_member_info()
+
+            if not credit_status:
+                # 用户征信信息异常，返回错误
+                return Http.gen_failure_response(code=2, message="Failed to query credit information.")
+
+            # 用户征信信息正常，继续注册
+            credit.verify_member_address()
+            return Http.gen_failure_response(code=2, message="continue...")
+            '''
             new_member = Member(
                 national_id=args['national_id'],
                 mobile=args['mobile'],
@@ -187,16 +206,14 @@ class MemberRegisterApi(Resource):
                 reg_ip=request.remote_addr
             )
             db.session.add(new_member)
-        member = Member.query.filter_by(national_id=args['national_id']).first()
-        member.salt = member.gene_Salt
-        uid = str(member.id)
-        db.session.add(member)
-        db.session.commit()
-        token = member.gene_Token
-        return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
-        #except Exception as e:
-        #    db.session.rollback()
-        #    return Http.gen_failure_response(message=e.__str__())
+            member = Member.query.filter_by(national_id=args['national_id']).first()
+            member.salt = member.gene_Salt
+            uid = str(member.id)
+            db.session.add(member)
+            db.session.commit()
+            token = member.gene_Token
+            return Http.gen_success_response(data={'uid': str(uid), 'token': token}, data_format=data_format)
+            '''
 
 
 class MemberInfoApi(Resource):
