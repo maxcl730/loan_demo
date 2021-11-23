@@ -59,15 +59,17 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            if self.citizen_address(language_sign='A') and self.citizen_address(language_sign='E'):
-                return self.user_address
+            self.citizen_address(language_sign='A')
+            self.citizen_address(language_sign='E')
+            return self.user_address
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            if self.alien_address(language_sign='A') and self.alien_address(language_sign='E'):
-                return self.user_address
+            self.alien_address(language_sign='A')
+            self.alien_address(language_sign='E')
+            return self.user_address
         else:
             # error national_id
             return None
