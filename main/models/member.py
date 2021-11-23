@@ -25,7 +25,8 @@ class Member(db.Model):
     updated_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     created_time = db.Column(db.DateTime, default=datetime.now)
     credit_info = db.Column(db.Text)
-    credit_info_address = db.Column(db.Text)
+    credit_address_e = db.Column(db.Text)  # E文地址信息
+    credit_address_a = db.Column(db.Text)  # A文地址信息
     debit = db.relationship('Debit', backref="member", lazy='dynamic')
     applications = db.relationship('Application', backref="member", lazy='dynamic')
     """

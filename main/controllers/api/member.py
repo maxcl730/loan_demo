@@ -178,7 +178,7 @@ class MemberRegisterApi(Resource):
             return Http.gen_failure_response(code=2, message="National/Resident id has been registered.")
         else:
             # 调用征信接口查询用户信息
-            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'], language=args['language'])
+            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
             member_credit_info = credit.verify_member_info()
             if not member_credit_info:
                 # 用户征信信息异常，返回错误
@@ -199,7 +199,8 @@ class MemberRegisterApi(Resource):
                 sex=args.get('sex', 0),
                 reg_ip=request.remote_addr,
                 credit_info=json.dumps(member_credit_info),
-                credit_info_address=json.dumps(member_address) if member_address else 'NULL'
+                credit_address_e=json.dumps(member_address.get('English')) if member_address.get('English', None) else None,
+                credit_address_a=json.dumps(member_address.get('Arabic')) if member_address.get('Arabic', None) else None
             )
             db.session.add(new_member)
             member = Member.query.filter_by(national_id=args['national_id']).first()

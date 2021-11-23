@@ -15,18 +15,17 @@ from common import Log
 
 class YakeenCredit:
     user_info = dict()
-    user_address = {'Arabic': dict(), 'English': dict()}
+    user_address = dict()  # {'Arabic': dict(), 'English': dict()}
     language_sign_map = {'Arabic': 'A', 'English': 'E'}
     executor = ThreadPoolExecutor(2)
 
-    def __init__(self, national_id, birthday, language):
+    def __init__(self, national_id, birthday):
         self.yk_client = Client(current_app.config['YAKEEN_SOAP_URL'])
         self.yk_client.set_options(timeout=20)
         self.username = current_app.config['YAKEEN_SOAP_USERNAME']
         self.password = current_app.config['YAKEEN_SOAP_PASSWORD']
         self.chargecode = current_app.config['YAKEEN_SOAP_CHARGECODE']
         self.referenceNumber = current_app.config['YAKEEN_SOAP_REFERENCENUMBER']
-        self.language = language
 
         self.member_national_id = national_id
         self.member_birthday = birthday.replace('/', '-')[3:]
@@ -54,26 +53,24 @@ class YakeenCredit:
 
     def verify_member_address(self):
         # 获取会员地址信息
-        # is it citizen or alien
+        # is it citizen or alien?
         if self.member_national_id[0:1] == '1':
             # citizen
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            self.citizen_address(self.language)
-            # self.citizen_address(self.language)
-            return self.user_address
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            self.alien_address(self.language)
-            # self.alien_address(language_sign='E')
-            return self.user_address
         else:
             # error national_id
             return None
+
+        self.alien_address(language='Arabic')
+        self.alien_address(language='English')
+        return self.user_address
 
     def citizen_info(self):
         self.user_info.clear()
@@ -96,7 +93,6 @@ class YakeenCredit:
             return False
 
     def citizen_address(self, language='English'):
-        self.user_address[language].clear()
         req = self.yk_client.factory.create("citizenAddressInfoRequest")
         req.dateOfBirth = self.member_birthday
         req.nin = self.member_national_id
@@ -107,6 +103,7 @@ class YakeenCredit:
         req.addressLanguage = self.language_sign_map[language]
         try:
             rs = self.yk_client.service.getCitizenAddressInfo(req)
+            self.user_address[language] = dict()
             for key in rs.__keylist__:
                 if isinstance(rs[key], list):
                     user_address_detail = list()
@@ -146,7 +143,6 @@ class YakeenCredit:
             return False
 
     def alien_address(self, language='English'):
-        self.user_address[language].clear()
         req = self.yk_client.factory.create("alienAddressInfoRequest")
         req.dateOfbirth = self.member_birthday
         req.iqamaNumber = self.member_national_id
@@ -157,6 +153,7 @@ class YakeenCredit:
         req.addressLanguage = self.language_sign_map[language]
         try:
             rs = self.yk_client.service.getAlienAddressInfo(req)
+            self.user_address[language] = dict()
             for key in rs.__keylist__:
                 if isinstance(rs[key], list):
                     user_address_detail = list()

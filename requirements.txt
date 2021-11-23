@@ -252,3 +252,5 @@ zipp==3.4.1
 zope.event==4.5.0
 zope.interface==5.4.0
 suds-jurko==0.6
+APScheduler==3.6.3
+Flask-APScheduler==1.11.0
