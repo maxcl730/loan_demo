@@ -160,6 +160,21 @@ if __name__ == '__main__':
         'birthday': '06/06/1995',
     }
 
+    user_info3 = {
+        'national_id': '1191383137',
+        'password': '123456',
+        'mobile': '13911155577',
+        'language': 'Arabic',
+        'birthday': '06/06/1414',
+    }
+
+    user_info4 = {
+        'national_id': '2295836777',
+        'password': '123456',
+        'mobile': '13911155577',
+        'language': 'Arabic',
+        'birthday': '06/06/1995',
+    }
     """
     user_info = {
         'national_id': '20210522',
@@ -182,7 +197,24 @@ if __name__ == '__main__':
         # 'method': 'A'
         'product_id': 9
     }
+    print("="*80)
+    pprint(user_info1)
     user_token = test_member_register(user_info1)
+    # user_token = test_member_login(user_info['national_id'], user_info['password'])
+    pprint(user_token)
+    print("="*80)
+    pprint(user_info2)
+    user_token = test_member_register(user_info2)
+    # user_token = test_member_login(user_info['national_id'], user_info['password'])
+    pprint(user_token)
+    print("="*80)
+    pprint(user_info3)
+    user_token = test_member_register(user_info3)
+    # user_token = test_member_login(user_info['national_id'], user_info['password'])
+    pprint(user_token)
+    print("="*80)
+    pprint(user_info4)
+    user_token = test_member_register(user_info4)
     # user_token = test_member_login(user_info['national_id'], user_info['password'])
     pprint(user_token)
     #user_token = test_user_auth(user_token['data'])
