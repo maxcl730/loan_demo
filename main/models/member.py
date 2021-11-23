@@ -27,6 +27,8 @@ class Member(db.Model):
     credit_info = db.Column(db.Text)
     credit_address_e = db.Column(db.Text)  # E文地址信息
     credit_address_a = db.Column(db.Text)  # A文地址信息
+    credit_address_e_count = db.Column(db.Integer, default=1)  # 地址获取次数
+    credit_address_a_count = db.Column(db.Integer, default=1)  # 地址获取次数
     debit = db.relationship('Debit', backref="member", lazy='dynamic')
     applications = db.relationship('Application', backref="member", lazy='dynamic')
     """

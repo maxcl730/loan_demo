@@ -200,7 +200,13 @@ class MemberRegisterApi(Resource):
                 reg_ip=request.remote_addr,
                 credit_info=json.dumps(member_credit_info),
                 credit_address_e=json.dumps(member_address.get('English')) if member_address.get('English', None) else None,
-                credit_address_a=json.dumps(member_address.get('Arabic')) if member_address.get('Arabic', None) else None
+                credit_address_a=json.dumps(member_address.get('Arabic')) if member_address.get('Arabic', None) else None,
+                credit_address_e_count=0 if member_address.get('English', None) else 1,
+                credit_address_a_count=0 if member_address.get('Arabic', None) else 1
+                # credit_address_e=None,
+                # credit_address_e_count=1,
+                # credit_address_a=None,
+                # credit_address_a_count=1
             )
             db.session.add(new_member)
             member = Member.query.filter_by(national_id=args['national_id']).first()
