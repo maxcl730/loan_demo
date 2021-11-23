@@ -7,10 +7,16 @@ from flask import current_app
 from concurrent.futures import ThreadPoolExecutor
 from common import Log
 
+# import logging
+# logging.basicConfig(level=logging.INFO)
+# logging.getLogger('suds.client').setLevel(logging.INFO)
+# logging.getLogger('suds.transport').setLevel(logging.INFO)
+
 
 class YakeenCredit:
     user_info = dict()
-    user_address = dict()
+    user_address = {'Arabic': dict(), 'English': dict()}
+    language_sign_map = {'A': 'Arabic', 'E': 'English'}
     executor = ThreadPoolExecutor(2)
 
     def __init__(self, national_id, birthday):
@@ -53,14 +59,14 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            if self.citizen_address():
+            if self.citizen_address(language_sign='A') and self.citizen_address(language_sign='E'):
                 return self.user_address
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            if self.alien_address():
+            if self.alien_address(language_sign='A') and self.alien_address(language_sign='E'):
                 return self.user_address
         else:
             # error national_id
@@ -86,8 +92,8 @@ class YakeenCredit:
             Log.warn(e.__str__())
             return False
 
-    def citizen_address(self):
-        self.user_address.clear()
+    def citizen_address(self, language_sign='E'):
+        self.user_address[self.language_sign_map[language_sign]].clear()
         req = self.yk_client.factory.create("citizenAddressInfoRequest")
         req.dateOfBirth = self.member_birthday
         req.nin = self.member_national_id
@@ -95,7 +101,7 @@ class YakeenCredit:
         req.password = self.password
         req.userName = self.username
         req.referenceNumber = self.referenceNumber
-        req.addressLanguage = 'E'
+        req.addressLanguage = language_sign
         try:
             rs = self.yk_client.service.getCitizenAddressInfo(req)
             for key in rs.__keylist__:
@@ -106,9 +112,9 @@ class YakeenCredit:
                         if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                             user_address_detail.append({add_key: v[add_key] for add_key in v.__keylist__})
                     if v:
-                        self.user_address[type(v).__name__] = user_address_detail
+                        self.user_address[self.language_sign_map[language_sign]][type(v).__name__] = user_address_detail
                 else:
-                    self.user_address[key] = rs[key]
+                    self.user_address[self.language_sign_map[language_sign]][key] = rs[key]
 
             # Log.info(self.user_address)
             return True
@@ -136,8 +142,8 @@ class YakeenCredit:
             Log.warn(e.__str__())
             return False
 
-    def alien_address(self):
-        self.user_address.clear()
+    def alien_address(self, language_sign='E'):
+        self.user_address[self.language_sign_map[language_sign]].clear()
         req = self.yk_client.factory.create("alienAddressInfoRequest")
         req.dateOfbirth = self.member_birthday
         req.iqamaNumber = self.member_national_id
@@ -145,7 +151,7 @@ class YakeenCredit:
         req.password = self.password
         req.userName = self.username
         req.referenceNumber = self.referenceNumber
-        req.addressLanguage = 'E'
+        req.addressLanguage = language_sign
         try:
             rs = self.yk_client.service.getAlienAddressInfo(req)
             for key in rs.__keylist__:
@@ -156,9 +162,9 @@ class YakeenCredit:
                         if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                             user_address_detail.append({add_key: v[add_key] for add_key in v.__keylist__})
                     if v:
-                        self.user_address[type(v).__name__] = user_address_detail
+                        self.user_address[self.language_sign_map[language_sign]][type(v).__name__] = user_address_detail
                 else:
-                    self.user_address[key] = rs[key]
+                    self.user_address[self.language_sign_map[language_sign]][key] = rs[key]
 
             # Log.info(self.user_address)
             return True

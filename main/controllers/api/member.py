@@ -185,8 +185,10 @@ class MemberRegisterApi(Resource):
                 return Http.gen_failure_response(code=2, message="Failed to query credit information.")
 
             # 用户征信信息正常，继续注册
+
+            # 用户地址信息
             member_address = credit.verify_member_address()
-            # return Http.gen_failure_response(code=2, message="continue...")
+            # return Http.gen_failure_response(code=2, message="Failed to query credit information.")
             new_member = Member(
                 national_id=args['national_id'],
                 mobile=args['mobile'],
@@ -197,7 +199,7 @@ class MemberRegisterApi(Resource):
                 sex=args.get('sex', 0),
                 reg_ip=request.remote_addr,
                 credit_info=json.dumps(member_credit_info),
-                credit_info_address=json.dumps(member_address) if member_address else ''
+                credit_info_address=json.dumps(member_address) if member_address else 'NULL'
             )
             db.session.add(new_member)
             member = Member.query.filter_by(national_id=args['national_id']).first()

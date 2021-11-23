@@ -6,7 +6,7 @@ from suds import WebFault
 import json
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logging.getLogger('suds.client').setLevel(logging.INFO)
 logging.getLogger('suds.transport').setLevel(logging.INFO)
 
