@@ -5,8 +5,8 @@ import sys
 import os.path as op
 from pprint import pprint
 
-# ROOT_PATH = 'http://127.0.0.1:5000'
-ROOT_PATH = 'https://api.salaf.sa'
+ROOT_PATH = 'http://127.0.0.1:5000'
+# ROOT_PATH = 'https://api.salaf.sa'
 
 
 def test_member_login(national_id, password):

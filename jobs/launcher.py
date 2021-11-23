@@ -4,7 +4,7 @@ import sys
 import argparse
 from flask_script import Command, Option
 from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
-# from jobs import credit
+from jobs import credit
 from datetime import datetime, timedelta
 from common import Log
 
@@ -76,13 +76,4 @@ class StartScheduler(Command):
             Log.warn(e)
 
     def do_all(self):
-        # 微信任务， 抓取公众号用户数据
-        self.scheduler.add_job(
-            id="wechat.get_user_data,",
-            func=wechat.get_user_data,
-            trigger='cron',
-            hour='10,20',
-            minute=30,
-            # second='*/5',
-            kwargs={}
-        )
+        pass

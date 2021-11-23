@@ -6,6 +6,7 @@ from main import create_app
 from database import db
 from flask_migrate import Migrate, MigrateCommand
 from main.models import admin, member  # , trial, homepage, image, wechat, notify
+from jobs.launcher import StartScheduler
 # from common.wechat import WXApp
 # from jobs.launcher import RunJob
 import sys
@@ -23,6 +24,8 @@ manager = Manager(app)
 manager.add_command("server", Server(host=app.config['BIND'], port=app.config['PORT']))
 Migrate(app=app, db=db)
 manager.add_command('db', MigrateCommand)  # 创建数据库映射命令
+# job
+manager.add_command("scheduler", StartScheduler())
 
 
 @manager.command

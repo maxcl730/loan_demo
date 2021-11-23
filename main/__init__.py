@@ -66,12 +66,12 @@ def create_app(config_name='production'):
         refresh()
         return redirect(url_for('security.login'))
 
-    @flask_bable.localeselector
-    def get_local():
-        language = request.accept_languages.best_match(['zh', 'en'])
-        language = 'zh_Hans_CN' if language == 'zh' else 'en'
-        # Log.info(language)
-        return language
+    #@flask_bable.localeselector
+    #def get_local():
+    #    language = request.accept_languages.best_match(['zh', 'en'])
+    #    language = 'zh_Hans_CN' if language == 'zh' else 'en'
+    #    # Log.info(language)
+    #    return language
 
     return app
 
