@@ -16,16 +16,17 @@ from common import Log
 class YakeenCredit:
     user_info = dict()
     user_address = {'Arabic': dict(), 'English': dict()}
-    language_sign_map = {'A': 'Arabic', 'E': 'English'}
+    language_sign_map = {'Arabic': 'A', 'English': 'E'}
     executor = ThreadPoolExecutor(2)
 
-    def __init__(self, national_id, birthday):
+    def __init__(self, national_id, birthday, language):
         self.yk_client = Client(current_app.config['YAKEEN_SOAP_URL'])
         self.yk_client.set_options(timeout=20)
         self.username = current_app.config['YAKEEN_SOAP_USERNAME']
         self.password = current_app.config['YAKEEN_SOAP_PASSWORD']
         self.chargecode = current_app.config['YAKEEN_SOAP_CHARGECODE']
         self.referenceNumber = current_app.config['YAKEEN_SOAP_REFERENCENUMBER']
+        self.language = language
 
         self.member_national_id = national_id
         self.member_birthday = birthday.replace('/', '-')[3:]
@@ -59,16 +60,16 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            self.citizen_address(language_sign='A')
-            self.citizen_address(language_sign='E')
+            self.citizen_address(self.language)
+            # self.citizen_address(self.language)
             return self.user_address
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            self.alien_address(language_sign='A')
-            self.alien_address(language_sign='E')
+            self.alien_address(self.language)
+            # self.alien_address(language_sign='E')
             return self.user_address
         else:
             # error national_id
@@ -94,8 +95,8 @@ class YakeenCredit:
             Log.warn(e.__str__())
             return False
 
-    def citizen_address(self, language_sign='E'):
-        self.user_address[self.language_sign_map[language_sign]].clear()
+    def citizen_address(self, language='English'):
+        self.user_address[language].clear()
         req = self.yk_client.factory.create("citizenAddressInfoRequest")
         req.dateOfBirth = self.member_birthday
         req.nin = self.member_national_id
@@ -103,7 +104,7 @@ class YakeenCredit:
         req.password = self.password
         req.userName = self.username
         req.referenceNumber = self.referenceNumber
-        req.addressLanguage = language_sign
+        req.addressLanguage = self.language_sign_map[language]
         try:
             rs = self.yk_client.service.getCitizenAddressInfo(req)
             for key in rs.__keylist__:
@@ -114,9 +115,9 @@ class YakeenCredit:
                         if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                             user_address_detail.append({add_key: v[add_key] for add_key in v.__keylist__})
                     if v:
-                        self.user_address[self.language_sign_map[language_sign]][type(v).__name__] = user_address_detail
+                        self.user_address[language][type(v).__name__] = user_address_detail
                 else:
-                    self.user_address[self.language_sign_map[language_sign]][key] = rs[key]
+                    self.user_address[language][key] = rs[key]
 
             # Log.info(self.user_address)
             return True
@@ -144,8 +145,8 @@ class YakeenCredit:
             Log.warn(e.__str__())
             return False
 
-    def alien_address(self, language_sign='E'):
-        self.user_address[self.language_sign_map[language_sign]].clear()
+    def alien_address(self, language='English'):
+        self.user_address[language].clear()
         req = self.yk_client.factory.create("alienAddressInfoRequest")
         req.dateOfbirth = self.member_birthday
         req.iqamaNumber = self.member_national_id
@@ -153,7 +154,7 @@ class YakeenCredit:
         req.password = self.password
         req.userName = self.username
         req.referenceNumber = self.referenceNumber
-        req.addressLanguage = language_sign
+        req.addressLanguage = self.language_sign_map[language]
         try:
             rs = self.yk_client.service.getAlienAddressInfo(req)
             for key in rs.__keylist__:
@@ -164,9 +165,9 @@ class YakeenCredit:
                         if hasattr(v, '__keylist__') and hasattr(v, '__iter__'):
                             user_address_detail.append({add_key: v[add_key] for add_key in v.__keylist__})
                     if v:
-                        self.user_address[self.language_sign_map[language_sign]][type(v).__name__] = user_address_detail
+                        self.user_address[language][type(v).__name__] = user_address_detail
                 else:
-                    self.user_address[self.language_sign_map[language_sign]][key] = rs[key]
+                    self.user_address[language][key] = rs[key]
 
             # Log.info(self.user_address)
             return True

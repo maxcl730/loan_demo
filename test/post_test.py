@@ -148,7 +148,7 @@ if __name__ == '__main__':
         'national_id': '1081383137',
         'password': '123456',
         'mobile': '13911155577',
-        'language': 'en',
+        'language': 'English',
         'birthday': '06/06/1414',
     }
 
@@ -156,7 +156,7 @@ if __name__ == '__main__':
         'national_id': '2175836777',
         'password': '123456',
         'mobile': '13911155577',
-        'language': 'en',
+        'language': 'English',
         'birthday': '06/06/1995',
     }
 
@@ -182,7 +182,7 @@ if __name__ == '__main__':
         # 'method': 'A'
         'product_id': 9
     }
-    user_token = test_member_register(user_info2)
+    user_token = test_member_register(user_info1)
     # user_token = test_member_login(user_info['national_id'], user_info['password'])
     pprint(user_token)
     #user_token = test_user_auth(user_token['data'])

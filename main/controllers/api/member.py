@@ -178,7 +178,7 @@ class MemberRegisterApi(Resource):
             return Http.gen_failure_response(code=2, message="National/Resident id has been registered.")
         else:
             # 调用征信接口查询用户信息
-            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
+            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'], language=args['language'])
             member_credit_info = credit.verify_member_info()
             if not member_credit_info:
                 # 用户征信信息异常，返回错误
