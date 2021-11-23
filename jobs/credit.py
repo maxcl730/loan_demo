@@ -25,7 +25,8 @@ def fix_user_address(**kwargs):
             credit = YakeenCredit(national_id=member.national_id, birthday=member.birthday)
             member_address = credit.verify_member_address(language='Arabic')
             credit_address_a = json.dumps(member_address.get('Arabic')) if member_address.get('Arabic', None) else None
-            Member.query.filter_by(username='name').update({'credit_address_a': credit_address_a})
+            Member.query.filter_by(national_id=member.national_id).update({'credit_address_a': credit_address_a})
+            Log.info("id: {}, address: {}".format(member.national_id, credit_address_a))
 
         time.sleep(3)
         members = Member.query.filter(Member.credit_address_e is None).all()
@@ -34,6 +35,7 @@ def fix_user_address(**kwargs):
             member_address = credit.verify_member_address(language='English')
             credit_address_e = json.dumps(member_address.get('English')) if member_address.get('English',
                                                                                                None) else None,
-            Member.query.filter_by(username='name').update({'credit_address_e': credit_address_e})
+            Member.query.filter_by(national_id=member.national_id).update({'credit_address_e': credit_address_e})
+            Log.info("id: {}, address: {}".format(member.national_id, credit_address_e))
 
         Log.info('done.')
