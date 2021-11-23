@@ -51,7 +51,7 @@ class YakeenCredit:
             # error national_id
             return None
 
-    def verify_member_address(self):
+    def verify_member_address(self, language='ALL'):
         # 获取会员地址信息
         # is it citizen or alien?
         if self.member_national_id[0:1] == '1':
@@ -59,15 +59,25 @@ class YakeenCredit:
             # for test
             self.member_national_id = '1081383117'
             self.member_birthday = '12-1414'
-            self.citizen_address(language='Arabic')
-            self.citizen_address(language='English')
+            if language == 'Arabic':
+                self.citizen_address(language='Arabic')
+            elif language == 'English':
+                self.citizen_address(language='English')
+            else:
+                self.citizen_address(language='Arabic')
+                self.citizen_address(language='English')
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
             self.member_national_id = '2475836777'
             self.member_birthday = '08-1983'
-            self.alien_address(language='Arabic')
-            self.alien_address(language='English')
+            if language == 'Arabic':
+                self.alien_address(language='Arabic')
+            elif language == 'English':
+                self.alien_address(language='English')
+            else:
+                self.alien_address(language='Arabic')
+                self.alien_address(language='English')
         else:
             # error national_id
             return None
