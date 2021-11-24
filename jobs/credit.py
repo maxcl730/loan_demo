@@ -9,7 +9,7 @@ import time
 import json
 
 # Get the ENV from os environment
-#env = os.environ.get('FLASK_ENV', 'development')
+# env = os.environ.get('FLASK_ENV', 'development')
 env = os.environ.get('FLASK_ENV', 'production')
 # Create the app instance via Factory method
 FLASK_APP = create_app(env.lower())
@@ -46,5 +46,4 @@ def fix_user_address(**kwargs):
                 Member.query.filter_by(national_id=member.national_id).update({'credit_address_e_count': member.credit_address_e_count + 1})
 
             Log.info("id: {}, address: {}".format(member.national_id, credit_address_e))
-
         Log.info('done.')

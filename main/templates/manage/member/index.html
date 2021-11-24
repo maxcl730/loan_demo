@@ -52,11 +52,11 @@
             <tr class="creditinfo" style="display: none;">
                 <td bgcolor="#F0F9FB" colspan="6"><p>
                     <b>Member credit info:</b>&nbsp;&nbsp;
-                    {{ item.credit_info }} <br>
+                    {{ item.credit_info | show_unicode}} <br>
                     <b>Address (Arabic):</b>&nbsp;&nbsp;
-                    {{ item.credit_address_a }} <br>
+                    {{ item.credit_address_a | show_unicode}} <br>
                     <b>Address (English):</b>&nbsp;&nbsp;
-                    {{ item.credit_address_e }}
+                    {{ item.credit_address_e | show_unicode}}
                 </p>
                 </td>
             </tr>

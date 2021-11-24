@@ -56,6 +56,8 @@ def create_app(config_name='production'):
     app.add_template_global(UrlManager.makeup_image_url, 'makeup_image_url')
     from common.fields import str2json
     app.add_template_global(str2json, 'str2json')
+    from common.fields import show_unicode
+    app.add_template_filter(show_unicode)
     from common.date import Date
     app.add_template_global(Date.datetime_calculate, 'datetime_calculate')
     manage.reg_bp(app)

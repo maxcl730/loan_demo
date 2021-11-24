@@ -38,3 +38,10 @@ def str2json(value=''):
     except json.decoder.JSONDecodeError:
         return ''
     return result
+
+
+def show_unicode(unicode_str=''):
+    if type(unicode_str) == str:
+        return unicode_str.encode("utf-8").decode("unicode-escape")
+    else:
+        return 'Null'
