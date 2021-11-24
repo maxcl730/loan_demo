@@ -6,7 +6,7 @@ from .parser import member_login_parser, uid_token_parser, member_register_parse
 from common.http import Http
 from common.helper.member import check_token
 from database import db
-from common import Log
+from flask import current_app
 from main.models.member import Member, Debit
 from common.helper.credit import YakeenCredit
 import json
@@ -177,18 +177,22 @@ class MemberRegisterApi(Resource):
             # 返回用户已存在
             return Http.gen_failure_response(code=2, message="National/Resident id has been registered.")
         else:
-            # 调用征信接口查询用户信息
-            credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
-            member_credit_info = credit.verify_member_info()
-            if not member_credit_info:
-                # 用户征信信息异常，返回错误
-                return Http.gen_failure_response(code=2, message="Failed to query credit information.")
+            if current_app.config['CREDIT_VERIFY']:
+                # 调用征信接口查询用户信息
+                credit = YakeenCredit(national_id=args['national_id'], birthday=args['birthday'])
+                member_credit_info = credit.verify_member_info()
+                if not member_credit_info:
+                    # 用户征信信息异常，返回错误
+                    return Http.gen_failure_response(code=2, message="Failed to query credit information.")
 
-            # 用户征信信息正常，继续注册
+                # 用户征信信息正常，继续注册
+                # 用户地址信息
+                member_address = credit.verify_member_address()
+                # return Http.gen_failure_response(code=2, message="Failed to query credit information.")
+            else:
+                member_credit_info = None
+                member_address = dict()
 
-            # 用户地址信息
-            member_address = credit.verify_member_address()
-            # return Http.gen_failure_response(code=2, message="Failed to query credit information.")
             new_member = Member(
                 national_id=args['national_id'],
                 mobile=args['mobile'],

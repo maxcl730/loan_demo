@@ -91,7 +91,7 @@ class ProductionConfig(Config):
     # CACHE_REDIS_PASSWORD = ''
     # CACHE_REDIS_DB = 1
     # CACHE_REDIS_URL = redis://user:password@localhost:6379/1
-    DEBUG = True
+    DEBUG = False
 
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://loan_demo_user:T69i5wz87a@loan@loandb-host/loan?charset=utf8mb4'
@@ -99,6 +99,8 @@ class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENCODING = "utf8mb4"
 
+    # 进行用户信用数据验证
+    CREDIT_VERIFY = False
     # Images upload config
     # UPLOAD_FOLDER = '/Users/chengliang/work/dev/trialcenter/trialcenter/static/upload'
     # IMAGE_URL_PREFIX = 'https://tc.self.com.cn/static/upload/'
@@ -130,6 +132,8 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENCODING = "utf8mb4"
 
+    # 进行用户信用数据验证
+    CREDIT_VERIFY = False
     # Images upload config
     # UPLOAD_FOLDER = '/Users/chengliang/work/dev/trialcenter/trialcenter/static/upload'
     # IMAGE_URL_PREFIX = 'https://tc.self.com.cn/static/upload/'
