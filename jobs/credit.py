@@ -3,7 +3,7 @@ import os
 from main import create_app
 from main.models.member import Member
 from common.helper.credit import YakeenCredit
-from database import db
+# from database import db
 from common import Log
 import time
 import json

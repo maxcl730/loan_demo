@@ -24,7 +24,9 @@
                 <label class="label-sm">{{ form.mobile.label.text }}</label> {{ form.mobile }} &nbsp;&nbsp;
                 <label class="label-sm">{{ form.created_time_begin.label.text }}</label> {{ form.created_time_begin }} &nbsp;&nbsp;
                 <label class="label-sm">{{ form.created_time_end.label.text }}</label> {{ form.created_time_end }} &nbsp;&nbsp;
-                <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/>
+                <input type="submit" value="{{ _fsdomain('Search') }}" class="btn-xs"/></br>
+                <label class="label-sm">{{ _fsdomain('Credit Info')  }}</label>
+                <input name="" type="button" value="show" id="creditshowbtn">
             </div>
         </form>
     </div>
@@ -36,7 +38,7 @@
                 <th>{{ _fsdomain('birthday') }}</th>
                 <th>{{ _fsdomain('gender') }}</th>
                 <th>{{ _fsdomain('Applications') }}</th>
-                <th>{{ _fsdomain('Founded At') }}</th>
+                <th>{{ _fsdomain('Creation Date') }}</th>
             </tr>
             {% for item in list.items %}
             <tr>
@@ -46,6 +48,17 @@
                 <td>{{ item.sex_text}}</td>
                 <td>{{ count_list[item.id.__str__()][0] }}</td>
                 <td>{{ item.created_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+            </tr>
+            <tr class="creditinfo" style="display: none;">
+                <td bgcolor="#F0F9FB" colspan="6"><p>
+                    <b>Member credit info:</b>&nbsp;&nbsp;
+                    {{ item.credit_info }} <br>
+                    <b>Address (Arabic):</b>&nbsp;&nbsp;
+                    {{ item.credit_address_a }} <br>
+                    <b>Address (English):</b>&nbsp;&nbsp;
+                    {{ item.credit_address_e }}
+                </p>
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -73,6 +86,23 @@
             //alert(newUrl);
             $("form[name='search_form']").attr('action',newUrl);
             $("form[name='search_form']").submit();
+        })
+    });
+    $(function(){
+        $("#creditshowbtn").click(function(){
+            if ($(this).val()=="show"){
+                $(this).val("hide")
+                var trs = $("tr[class='creditinfo']");
+                for(i = 0; i < trs.length; i++){
+                    trs[i].style.display = ""; //这里获取的trs[i]是DOM对象而不是jQuery对象，因此不能直接使用hide()方法
+                }
+            }else{
+                $(this).val("show")
+                var trs = $("tr[class='creditinfo']");
+                for(i = 0; i < trs.length; i++){
+                    trs[i].style.display = "none"; //这里获取的trs[i]是DOM对象而不是jQuery对象，因此不能直接使用hide()方法
+                }
+            }
         })
     })
     </script>
