@@ -36,15 +36,15 @@ class YakeenCredit:
         if self.member_national_id[0:1] == '1':
             # citizen
             # for test
-            self.member_national_id = '1081383117'
-            self.member_birthday = '12-1414'
+            # self.member_national_id = '1081383117'
+            # self.member_birthday = '12-1414'
             if self.citizen_info():
                 return self.user_info
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
-            self.member_national_id = '2475836777'
-            self.member_birthday = '08-1983'
+            # self.member_national_id = '2475836777'
+            # self.member_birthday = '08-1983'
             if self.alien_info():
                 return self.user_info
         else:
@@ -57,8 +57,8 @@ class YakeenCredit:
         if self.member_national_id[0:1] == '1':
             # citizen
             # for test
-            self.member_national_id = '1081383117'
-            self.member_birthday = '12-1414'
+            # self.member_national_id = '1081383117'
+            # self.member_birthday = '12-1414'
             if language == 'Arabic':
                 self.citizen_address(language='Arabic')
             elif language == 'English':
@@ -69,8 +69,8 @@ class YakeenCredit:
         elif self.member_national_id[0:1] == '2':
             # alien
             # for test
-            self.member_national_id = '2475836777'
-            self.member_birthday = '08-1983'
+            # self.member_national_id = '2475836777'
+            # self.member_birthday = '08-1983'
             if language == 'Arabic':
                 self.alien_address(language='Arabic')
             elif language == 'English':
