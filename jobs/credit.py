@@ -33,7 +33,6 @@ def fix_user_address(**kwargs):
             Log.info("id: {}, address: {}".format(member.national_id, credit_address_a))
             time.sleep(1)
 
-        time.sleep(3)
         members = Member.query.filter(Member.credit_address_e_count > 0).all()
         for member in members:
             credit = YakeenCredit(national_id=member.national_id, birthday=member.birthday)
