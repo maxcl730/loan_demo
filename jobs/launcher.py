@@ -28,8 +28,14 @@ class StartScheduler(Command):
 
         print('[{}] Start scheduler main processor.'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         if "name" in ret_params and ret_params['name'] is not None:
+            job_defaults = {
+                            #'max_instances': 2,
+                            'coalesce': True,
+                            'timezone': 'America/New_York',
+                            #'timezone': 'Asia/Shanghai',
+                            }
             try:
-                self.scheduler = BlockingScheduler()
+                self.scheduler = BlockingScheduler(job_defaults=job_defaults)
                 # 执行指定任务
                 self.do_single(params=ret_params)
                 self.scheduler.start()
@@ -39,6 +45,8 @@ class StartScheduler(Command):
             job_defaults = {
                             'max_instances': 2,
                             'coalesce': True,
+                            #'timezone': 'America/New_York',
+                            'timezone': 'Asia/Shanghai',
                             }
             self.scheduler = BackgroundScheduler(job_defaults=job_defaults)
             # 执行全部任务

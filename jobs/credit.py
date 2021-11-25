@@ -19,7 +19,7 @@ def fix_user_address(**kwargs):
     # 完善用户地址信息
     with FLASK_APP.app_context():
         Log.info('Fix user address.')
-
+        """
         members = Member.query.filter(Member.credit_address_a_count > 0).all()
         for member in members:
             credit = YakeenCredit(national_id=member.national_id, birthday=member.birthday)
@@ -46,4 +46,5 @@ def fix_user_address(**kwargs):
                 Member.query.filter_by(national_id=member.national_id).update({'credit_address_e_count': member.credit_address_e_count + 1})
 
             Log.info("id: {}, address: {}".format(member.national_id, credit_address_e))
+        """
         Log.info('done.')
