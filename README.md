@@ -24,3 +24,8 @@ sh start.sh
 
 #停止服务
 sh stop.sh
+
+
+#Tasks
+#完善用户地址信息
+python manage.py scheduler -m credit.fix_user_address
