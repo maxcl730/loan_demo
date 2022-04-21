@@ -51,7 +51,8 @@ swagger_config = {
     "swagger_ui": True,
     "specs_route": "/apidocs/"
 }
-swagger = Swagger(config=swagger_config)
+# swagger = Swagger(config=swagger_config)
+swagger = Swagger(config=Swagger.DEFAULT_CONFIG)
 
 '''
 @login_manager.user_loader
