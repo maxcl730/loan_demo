@@ -25,11 +25,11 @@ class MemberNickname(fields.Raw):
 class MemberLoginApi(Resource):
     def post(self):
         """
-        会员登录
-        调用接口需要提供 National_id/Password, 返回Token和uid。
+        Login
+        Require:  National_id/Password;  return: Token/uid。
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: body
             in: body
@@ -45,11 +45,11 @@ class MemberLoginApi(Resource):
                   example: "19230192"
                 password:
                   type: string
-                  description: 用户密码.
+                  description: password.
                   example: "helloworld"
         responses:
           200:
-            description: 返回Token和Uid
+            description: return Token and Uid
             examples:
               json: {'token': 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU0NzcyMjY0MCwiZXhwIjoxNTQ3NzIyOTQwfQ.eyJpZCI6IjVjMzgzNTNkNmZlYmJiMDcyNTE0OGE1OCJ9._BjoZS8TMAifNik21hO6xpSVyHXEzRDmMrmWiRVgx0s', 'uid':123}
 
@@ -80,16 +80,16 @@ class MemberLoginApi(Resource):
 class MemberAuthApi(Resource):
     def get(self):
         """
-        会员验证
-        使用uid和token验证当前用户是否有效
+        Authorized
+        Verify uid and token or renew token.
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -100,7 +100,7 @@ class MemberAuthApi(Resource):
               type: string
         responses:
           200:
-            description: code=0为正常，返回uid(用户id)和AccessToken，每次用户访问登录接口Token会更新；code不等于0请查看message中的错误信息。
+            description: code=0 success，return uid and AccessToken，Token will be refreshed at request；code<> 0 failed.
             examples:
               json: {'code': 0, "message": "Success", 'data': {'uid':'5c3a15126febbb06f576384b', 'token':'feee62378cc104e14e628e0048325103'}}
         """
@@ -127,11 +127,11 @@ class MemberAuthApi(Resource):
 class MemberRegisterApi(Resource):
     def post(self):
         """
-        会员信息注册
-        会员信息注册，National_ID/Mobile/Password
+        Register
+        Require: National_ID/Mobile/Password
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: body
             in: body
@@ -147,23 +147,23 @@ class MemberRegisterApi(Resource):
                   example: "19230192"
                 mobile:
                   type: string
-                  description: 电话.
+                  description: mobile.
                   example: "111000222333"
                 password:
                   type: string
-                  description: 用户密码.
+                  description: password.
                   example: "hello_world"
                 language:
                   type: string
-                  description: 用户语言
+                  description: language
                   example: "en_US"
                 birthday:
                   type: string
-                  description: 用户出生日期
+                  description: birthday
                   example: "dd/mm/yyyy"
         responses:
           200:
-            description: code=0为正常，返回uid(用户id)和AccessToken，每次用户访问登录接口Token会更新；code不等于0请查看message中的错误信息。
+            description: code=0 success，return uid and AccessToken，Token will be refreshed at request；code<> 0 failed.
             examples:
               json: {'code': 0, "message": "Success", 'data': {'uid':'5c3a15126febbb06f576384b', 'token':'feee62378cc104e14e628e0048325103'}}
         """
@@ -225,16 +225,16 @@ class MemberRegisterApi(Resource):
 class MemberInfoApi(Resource):
     def get(self):
         """
-        获取会员信息
-        获取昵称、头像、性别、状态、数等个人信息
+        Information query
+        Return nickname/ avatar/ gender / status etc.
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -246,11 +246,7 @@ class MemberInfoApi(Resource):
         responses:
           200:
             description:
-              code=0为正常，返回用户信息；code不等于0请查看message中的错误信息；
-              nickname:用户昵称；
-              sex： 0 未知，1 男，2 女；
-              status： 1 正常 ，2 禁用；
-              point： 剩余试用次数。
+              code=0 success，return user info；code<>0 please check error message；
             examples:
               json: {'code': 0, "message": "Success", 'data': {'nickname':'logan', 'national_id':'1304124123', 'sex':1, 'status':1, 'mobile':'11222333444', 'language':'en_US'}}
 
@@ -296,16 +292,16 @@ class MemberInfoApi(Resource):
 
     def post(self):
         """
-        更新会员信息， 注册新会员信息
-        更新会员密码、手机号、nickname、性别、语言等
+        Information update
+        Include password/ mobile /nickname/ gender / language etc.
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -321,7 +317,7 @@ class MemberInfoApi(Resource):
               properties:
                 nickname:
                   type: string
-                  description: 昵称.
+                  description: nickname
                   example: "iloveu"
                 password:
                   type: string
@@ -329,19 +325,19 @@ class MemberInfoApi(Resource):
                   example: "3uihfaefeDAFAa34fAFA"
                 mobile:
                   type: string
-                  description: 手机号
+                  description: mobile
                   example: "91030219421"
                 sex:
                   type: int
-                  description: 性别
-                  example: "1-男；2-女；0-未知"
+                  description: gender
+                  example: "1-male；2-female；0-unknown"
                 language:
                   type: string
-                  description: 语言
+                  description: language
                   example: "zh_CN, en_US"
         responses:
           200:
-            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            description: code=0 ,success ；code<> 0 failed；
             examples:
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 
@@ -369,16 +365,16 @@ class MemberInfoApi(Resource):
 class MemberDebitApi(Resource):
     def post(self):
         """
-        更新会员借记卡
-        更新会员借记卡信息：账户名、卡号
+        Member debit update
+        Require: name and number
         ---
         tags:
-          - 会员接口
+          - Member
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -394,15 +390,15 @@ class MemberDebitApi(Resource):
               properties:
                 name:
                   type: string
-                  description: 账号名
+                  description: Name
                   example: "James Harden"
                 number:
                   type: string
-                  description: 账号
+                  description: Account number
                   example: "623192012395821021"
         responses:
           200:
-            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            description: code=0 ,success ；code<> 0 failed；
             examples:
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 

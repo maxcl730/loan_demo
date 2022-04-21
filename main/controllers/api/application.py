@@ -22,15 +22,15 @@ class ProductValue(fields.Raw):
 class LoanApplicationApi(Resource):
     def get(self):
         """
-        贷款申请列表
-        贷款申请列表
+        Application list
+        Application list (The specific application or all of user)
         ---
         tags:
-          - 贷款申请接口
+          - Application
         parameters:
           - name: uid
             in: query
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -41,17 +41,16 @@ class LoanApplicationApi(Resource):
           - name: application_id
             in: query
             required: False
-            description: 贷款id，如为空则查询所有该用户的贷款申请
+            description: Application id. If not provided, all applications of user will be return.
             schema:
               type: int
         responses:
           200:
             description:
-              code=0为正常，返回首页内容；code不等于0请查看message中的错误信息；</br>
+              code=0 success；code<> 0 failed.</br>
               数据项：</br>
-              applications_number - 总申请数</br>
-              applications:申请数组
-              {id:申请id，nickname:用户昵称，avatar:用户头像，content:申请内容，created_time:申请时间}
+              applications_number - Total of applications</br>
+              applications:detail information.
             examples:
               json: {'code': 0, "message": "Success", 'data': { }}
 
@@ -124,16 +123,16 @@ class LoanApplicationApi(Resource):
 
     def post(self):
         """
-        会员申请贷款
-        申请贷款，需要提交：amount/term/apr/method
+        Loan apply
+        Loan apply，require：amount/term/apr/method
         ---
         tags:
-          - 贷款申请接口
+          - Application
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -155,7 +154,7 @@ class LoanApplicationApi(Resource):
                   example: 9
         responses:
           200:
-            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            description: code=0 success；code<> 0 failed.
             examples:
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 

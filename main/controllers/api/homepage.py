@@ -3,9 +3,9 @@ from flask import current_app
 from flask_restful import Resource, fields
 from datetime import datetime
 from common.http import Http
-from common.helper.mapping import StandardValue
+# from common.helper.mapping import StandardValue
 from .parser import pagination_get_perser
-from common.helper.application import ApplicationAvatars, ApplicationCount
+# from common.helper.application import ApplicationAvatars, ApplicationCount
 
 
 class HomepageApi(Resource):

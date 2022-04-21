@@ -18,18 +18,17 @@ from common import Log
 
 class LoanProductsApi(Resource):
     def get(self):
-        # 返回小贷产品
         """
-        获取贷款产品列表
-        获取贷款产品列表(amount/terms/fees/fee_payment/rate_per_month)
+        Products list
+        Products list (include: amount/ terms/ fees/ fee_payment/ rate_per_month)
         ---
         tags:
-          - Loan接口
+          - Product
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -72,11 +71,11 @@ class LoanProductInstallmentsApi(Resource):
     def get(self):
         # 返回小贷产品分期明细
         """
-        获取贷款产品分期明细
-        根据贷款产品返回分期明细
+        Installments of product
+        Installments of product (monthly)
         ---
         tags:
-          - Loan接口
+          - Product
         parameters:
           - name: uid
             in: query
@@ -215,16 +214,16 @@ class InstallmentsDetailApi(Resource):
 class RepaymentListApi(Resource):
     def get(self):
         """
-        还款列表接口
-        还款列表接口
+        Repayment list
+        All Repayment of user
         ---
         tags:
-          - Loan接口
+          - Repayment
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -235,7 +234,7 @@ class RepaymentListApi(Resource):
               type: string
         responses:
           200:
-            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            description: code=0 success；code<>0 failed；
             examples:
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 
@@ -284,16 +283,16 @@ class RepaymentListApi(Resource):
 class RepaymentApi(Resource):
     def post(self):
         """
-        还款接口
-        还款接口，需要提交：application_id/sequence
+        Repay
+        require：application_id/sequence
         ---
         tags:
-          - Loan接口
+          - Repayment
         parameters:
           - name: uid
             in: query
             required: true
-            description: 用户id
+            description: user id
             schema:
               type: string
           - name: token
@@ -312,15 +311,15 @@ class RepaymentApi(Resource):
               properties:
                 application_id:
                   type: int
-                  description: 申请id
+                  description: application id
                   example: 132
                 sequence:
                   type: int
-                  description: 分期序号
+                  description: sequence
                   example: 132
         responses:
           200:
-            description: code=0为正常，返回成功；code不等于0请查看message中的错误信息；
+            description: code=0 success；code<>0 failed；
             examples:
               json: {'code': 0, 'message':'SUCCESS', 'data':{}}
 
