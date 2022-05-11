@@ -100,7 +100,7 @@ class ProductionConfig(Config):
     SQLALCHEMY_ENCODING = "utf8mb4"
 
     # 进行用户信用数据验证
-    CREDIT_VERIFY = True
+    CREDIT_VERIFY = False
     # Images upload config
     # UPLOAD_FOLDER = '/Users/chengliang/work/dev/trialcenter/trialcenter/static/upload'
     # IMAGE_URL_PREFIX = 'https://tc.self.com.cn/static/upload/'
